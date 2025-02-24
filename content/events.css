@@ -1,0 +1,35 @@
+/*
+Name: Dylan Gill & Joel Hieckert
+Class Code: INFT-2202-03
+Description: events.css
+*/
+
+/* Events page heading styling */
+#eventsCalendar + h1 {
+    text-align: center;
+    color: #e31837;
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+}
+
+/* Events page filters styling */
+.filters {
+    margin-bottom: 20px;
+}
+
+.filters .btn-outline-primary {
+    border-color: #e31837;
+    color: #e31837;
+}
+
+.filters .btn-outline-primary:hover {
+    background-color: #e31837;
+    border-color: #e31837;
+    color: #ffffff;
+}
+
+.filters .btn-outline-primary.active {
+    background-color: #e31837;
+    border-color: #e31837;
+    color: #ffffff;
+}

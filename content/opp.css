@@ -1,0 +1,84 @@
+/*
+Name: Dylan Gill & Joel Hieckert
+Class Code: INFT-2202-03
+Description: home.css
+*/
+
+/* Opportunities page container and heading styling */
+.container h1 {
+    text-align: center;
+    color: #e31837;
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+}
+
+/* Opportunities page container styling */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #ffffff;
+}
+
+/* Styling for opportunities cards with Salvation Army red and white theme */
+#opportunitiesContainer .card {
+    width: 300px;
+    height: 300px;
+    margin: 0 auto 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    border: 2px solid #e31837;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+}
+
+/* Text alignment and padding for card content, with button pushed to bottom and centered */
+#opportunitiesContainer .card-body {
+    text-align: center;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+/* Card title styling with Salvation Army red */
+#opportunitiesContainer .card-title {
+    font-size: 1.25rem;
+    margin-bottom: 10px;
+    color: #e31837;
+    font-weight: bold;
+}
+
+/* Card text styling for description and date/time */
+#opportunitiesContainer .card-text {
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+/* Styling for the "Sign Up" button with Salvation Army red, now at the bottom and centered */
+#opportunitiesContainer .btn-primary {
+    width: 100px;
+    margin: 0 auto;
+    margin-top: auto;
+    display: block;
+    background-color: #e31837;
+    border-color: #e31837;
+    font-weight: bold;
+}
+
+#opportunitiesContainer .btn-primary:hover {
+    background-color: #b3122f;
+    border-color: #b3122f;
+    color: #ffffff;
+    box-shadow: 0 4px 8px rgba(227, 24, 55, 0.4);
+}
+
+/* Layout for row containing cards */
+#opportunitiesContainer .row {
+    justify-content: center;
+}
+

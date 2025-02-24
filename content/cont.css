@@ -1,0 +1,77 @@
+/*
+Name: Dylan Gill & Joel Hieckert
+Class Code: INFT-2202-03
+Description: contact-us.css
+*/
+
+/* Contact Us page styling */
+main.container h1 {
+    text-align: center; /* Center the h1 on Contact Us page */
+    color: #e31837; /* Salvation Army red */
+    font-size: 2.5rem; /* Match home page heading size for consistency */
+    margin-bottom: 20px; /* Space below heading */
+}
+
+main.container .row {
+    justify-content: center; /* Center the form and button row */
+    align-items: flex-start; /* Align items at the top for better vertical alignment */
+}
+
+main.container .input-group-text {
+    background-color: #e31837; /* Red background for input labels */
+    color: #ffffff; /* White text for contrast */
+    border: 1px solid #e31837; /* Red border for Salvation Army theme */
+}
+
+main.container .form-control {
+    border: 1px solid #e31837; /* Red border for inputs */
+    background-color: #ffffff; /* White background for inputs */
+    color: #333; /* Dark gray text for readability */
+}
+
+main.container .form-control:focus {
+    border-color: #b3122f; /* Darker red on focus for emphasis */
+    box-shadow: 0 0 5px rgba(227, 24, 55, 0.3); /* Subtle red glow on focus */
+}
+
+main.container .btn-primary {
+    background-color: #e31837;
+    border-color: #e31837;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+main.container .btn-primary:hover {
+    background-color: #b3122f;
+    border-color: #b3122f;
+    color: #ffffff;
+}
+
+main.container .btn-warning {
+    background-color: #ffd700; /* Gold for Cancel button to match navbar hover */
+    border-color: #ffd700;
+    color: #333;
+    font-weight: bold;
+}
+
+main.container .btn-warning:hover {
+    background-color: #d9b300; /* Darker gold on hover */
+    border-color: #d9b300;
+    color: #333;
+}
+
+#showContactListBtn {
+    padding: 5px 10px;
+    font-size: 0.8em;
+    background-color: #e31837;
+    border-color: #e31837;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+#showContactListBtn:hover {
+    background-color: #b3122f;
+    border-color: #b3122f;
+    color: #ffffff;
+}
+

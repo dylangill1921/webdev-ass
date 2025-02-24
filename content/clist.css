@@ -1,0 +1,50 @@
+/*
+Name: Dylan Gill & Joel Hieckert
+Class Code: INFT-2202-03
+Description: contact-list.css
+*/
+
+/* Contact List page styling */
+main.container h1 {
+    text-align: center; /* Center the h1 on Contact List page */
+    color: #e31837; /* Salvation Army red */
+    font-size: 2.5rem; /* Match home page heading size for consistency */
+    margin-bottom: 20px; /* Space below heading */
+}
+
+.table-dark {
+    background-color: #e31837; /* Red header for Salvation Army theme */
+    color: #ffffff; /* White text for contrast */
+}
+
+.table-dark th {
+    border-color: #b3122f; /* Darker red for borders */
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: #ffffff; /* White for odd rows */
+}
+
+.table-striped tbody tr:nth-of-type(even) {
+    background-color: #f8f9fa; /* Light gray for even rows */
+}
+
+.table-bordered {
+    border: 1px solid #e31837; /* Red border for table */
+}
+
+.table-hover tbody tr:hover {
+    background-color: #ffd700; /* Gold hover for rows to match navbar */
+    color: #333; /* Dark gray text for contrast */
+}
+
+.btn-danger, .btn-warning {
+    font-size: 0.8rem; /* Smaller buttons for table actions */
+}
+
+/* Ensure message column wraps text if too long */
+.table td, .table th {
+    word-wrap: break-word; /* Allow long text to wrap */
+    max-width: 200px; /* Limit width to prevent overflow */
+}
+

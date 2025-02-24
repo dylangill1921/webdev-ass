@@ -1,0 +1,100 @@
+/*
+Name: Dylan Gill & Joel Hieckert
+Class Code: INFT-2202-03
+Description: home.css
+*/
+
+/* Home page styling to center all text */
+main.container {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+main.container h1 {
+    color: #e31837;
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+}
+
+main.container p {
+    font-size: 1.1rem;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+main.container .carousel {
+    margin-bottom: 30px;
+}
+
+main.container .btn-primary {
+    background-color: #e31837;
+    border-color: #e31837;
+    color: #ffffff;
+    font-weight: bold;
+    padding: 10px 20px;
+}
+
+main.container .btn-primary:hover {
+    background-color: #b3122f;
+    border-color: #b3122f;
+    color: #ffffff;
+}
+
+#AboutUsBtn {
+    display: block;
+    margin: 0 auto;
+}
+
+/* Navbar styling with Salvation Army red background and white text */
+.navbar {
+    background-color: #e31837 !important; /* Salvation Army red, with !important to override Bootstrap */
+    padding: 1rem 0;
+}
+
+.navbar-brand, .nav-link, .dropdown-toggle {
+    color: #ffffff !important;
+    font-weight: bold;
+}
+
+.navbar-brand:hover, .nav-link:hover, .nav-link.active:hover, .dropdown-toggle:hover {
+    color: #ffd700 !important; /* Gold for a noticeable hover effect, applied to active and regular links */
+}
+
+.navbar-nav .nav-link.active {
+    color: #f8f9fa !important; /* Slightly lighter white for active state */
+    font-weight: bolder;
+}
+
+.dropdown-menu {
+    background-color: #e31837;
+    border: none;
+    display: block;
+    min-width: 150px;
+    position: absolute;
+    z-index: 1000; /* Ensure dropdown appears above other content */
+}
+
+.dropdown-item {
+    color: #ffffff !important;
+}
+
+.dropdown-item:hover {
+    background-color: #b3122f;
+    color: #ffffff !important;
+}
+
+.navbar-toggler {
+    border-color: #ffffff !important;
+}
+
+.navbar-nav {
+    margin-right: 20px;
+}
+
+.nav-item {
+    margin-left: 15px;
+}
+
+.nav-item:first-child {
+    margin-left: 0;
+}
