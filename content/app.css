@@ -1,7 +1,8 @@
 /*
-Name: Dylan Gill & Joel Hieckert
-Class Code: INFT-2202-03
-Description: home.css
+    Name: Dylan Gill & Joel Hieckert
+    Class Code: INFT-2202-03
+    Date: February 23, 2025
+    Description: app.css
 */
 
 /* Home page styling to center all text */
@@ -45,56 +46,18 @@ main.container .btn-primary:hover {
     margin: 0 auto;
 }
 
-/* Navbar styling with Salvation Army red background and white text */
-.navbar {
-    background-color: #e31837 !important; 
-    padding: 1rem 0;
+/* Meme container styling */
+#memeContainer h2 {
+    color: #e31837;
+    font-size: 2rem;
+    margin-bottom: 20px;
 }
 
-.navbar-brand, .nav-link, .dropdown-toggle {
-    color: #ffffff !important;
-    font-weight: bold;
-}
-
-.navbar-brand:hover, .nav-link:hover, .nav-link.active:hover, .dropdown-toggle:hover {
-    color: #ffd700 !important; 
-}
-
-.navbar-nav .nav-link.active {
-    color: #f8f9fa !important;
-    font-weight: bolder;
-}
-
-.dropdown-menu {
-    background-color: #e31837;
-    border: none;
-    display: block;
-    min-width: 150px;
-    position: absolute;
-    z-index: 1000; 
-}
-
-.dropdown-item {
-    color: #ffffff !important;
-}
-
-.dropdown-item:hover {
-    background-color: #b3122f;
-    color: #ffffff !important;
-}
-
-.navbar-toggler {
-    border-color: #ffffff !important;
-}
-
-.navbar-nav {
-    margin-right: 20px;
-}
-
-.nav-item {
-    margin-left: 15px;
-}
-
-.nav-item:first-child {
-    margin-left: 0;
+#memeDisplay img {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 15px;
+    border: 2px solid #e31837; 
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
 }

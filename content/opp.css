@@ -1,7 +1,8 @@
 /*
-Name: Dylan Gill & Joel Hieckert
-Class Code: INFT-2202-03
-Description: home.css
+    Name: Dylan Gill & Joel Hieckert
+    Class Code: INFT-2202-03
+    Date: February 23, 2025
+    Description: opp.css
 */
 
 /* Opportunities page container and heading styling */
@@ -12,7 +13,6 @@ Description: home.css
     margin-bottom: 20px;
 }
 
-/* Opportunities page container styling */
 .container {
     max-width: 1200px;
     margin: 0 auto;
@@ -20,7 +20,6 @@ Description: home.css
     background-color: #ffffff;
 }
 
-/* Styling for opportunities cards with Salvation Army red and white theme */
 #opportunitiesContainer .card {
     width: 300px;
     height: 300px;
@@ -34,7 +33,6 @@ Description: home.css
     background-color: #ffffff;
 }
 
-/* Text alignment and padding for card content, with button pushed to bottom and centered */
 #opportunitiesContainer .card-body {
     text-align: center;
     padding: 15px;
@@ -44,7 +42,6 @@ Description: home.css
     height: 100%;
 }
 
-/* Card title styling with Salvation Army red */
 #opportunitiesContainer .card-title {
     font-size: 1.25rem;
     margin-bottom: 10px;
@@ -52,14 +49,12 @@ Description: home.css
     font-weight: bold;
 }
 
-/* Card text styling for description and date/time */
 #opportunitiesContainer .card-text {
     font-size: 0.9rem;
     margin-bottom: 10px;
     color: #333;
 }
 
-/* Styling for the "Sign Up" button with Salvation Army red, now at the bottom and centered */
 #opportunitiesContainer .btn-primary {
     width: 100px;
     margin: 0 auto;
@@ -77,7 +72,6 @@ Description: home.css
     box-shadow: 0 4px 8px rgba(227, 24, 55, 0.4);
 }
 
-/* Layout for row containing cards */
 #opportunitiesContainer .row {
     justify-content: center;
 }

@@ -1,3 +1,10 @@
+/*
+    Name: Dylan Gill & Joel Hieckert
+    Class Code: INFT-2202-03
+    Date: February 23, 2025
+    Description: contact.js
+*/
+
 "use strict";
 
 // IIFE - Immediately Invoked Functional Expression

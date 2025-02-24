@@ -1,7 +1,8 @@
 /*
-Name: Dylan Gill & Joel Hieckert
-Class Code: INFT-2202-03
-Description: contact-list.css
+    Name: Dylan Gill & Joel Hieckert
+    Class Code: INFT-2202-03
+    Date: February 23, 2025
+    Description: clist.css
 */
 
 /* Contact List page styling */
@@ -42,7 +43,6 @@ main.container h1 {
     font-size: 0.8rem; 
 }
 
-/* Ensure message column wraps text if too long */
 .table td, .table th {
     word-wrap: break-word; 
     max-width: 200px;
