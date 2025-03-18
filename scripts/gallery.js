@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const closeLightbox = document.getElementById("close-lightbox");
 
     // Fetches and loads gallery images from gallery.json
-    fetch("gallery.json")
+    fetch("../../data/gallery.json")
         .then(response => response.json()) 
         .then(data => {
             // Loops through each image in the data
