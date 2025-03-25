@@ -1,0 +1,33 @@
+h2 {
+    text-align: center;
+    width: 80%;
+    margin: 0 auto;
+    margin-bottom: 20px;
+}
+
+p {
+    text-align: center;
+    width: 80%;
+    margin: 0 auto;
+    margin-bottom: 20px;
+}
+
+.custom-list {
+    list-style: none;
+    padding: 0;
+    text-align: center;
+}
+
+.custom-list li {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.custom-list li::before {
+    content: "•";
+    font-size: 1.5em;
+    margin-right: 10px;
+}
+

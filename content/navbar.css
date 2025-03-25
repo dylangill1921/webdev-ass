@@ -35,12 +35,12 @@
 }
 
 .dropdown-item {
-    color: #ffffff !important;
+    color: #e31837 !important;
 }
 
 .dropdown-item:hover {
     background-color: #b3122f;
-    color: #ffffff !important;
+    color: #b3122f !important;
 }
 
 .navbar-toggler {
