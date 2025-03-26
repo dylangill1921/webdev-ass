@@ -1,11 +1,10 @@
 /*
     Name: Dylan Gill & Joel Hieckert
     Class Code: INFT-2202-03
+    Description: opportunities.ts - Handles opportunities page
     Date: February 23, 2025
-    Description: oppurtunities.js
 */
-
-// An array of objects for opportunities
+"use strict";
 const opportunities = [
     {
         title: "Community Clean-Up",
@@ -26,53 +25,70 @@ const opportunities = [
         time: "1:00 PM - 4:00 PM"
     }
 ];
-
-// Populate the page with different opportunities for someone to see if they want to volunteer after the dom is loaded
+export function DisplayOpportunitiesPage() {
+    const container = document.getElementById('opportunitiesContainer');
+    if (container) {
+        opportunities.forEach(opportunity => {
+            const cardHtml = `
+                <div class="col-md-4 mb-3">
+                    <div class="card" style="width: 18rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">${opportunity.title}</h5>
+                            <p class="card-text">${opportunity.description}</p>
+                            <p class="card-text"><small class="text-muted">${opportunity.date} at ${opportunity.time}</small></p>
+                            <button class="btn btn-primary" onclick="openModal('${opportunity.title}')">Sign Up</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            container.innerHTML += cardHtml;
+        });
+    }
+}
 document.addEventListener('DOMContentLoaded', function () {
     const container = document.getElementById('opportunitiesContainer');
-    opportunities.forEach(opportunity => {
-        const cardHtml = `
-            <div class="card" style="width: 18rem;">
-                <div class="card-body">
-                    <h5 class="card-title">${opportunity.title}</h5>
-                    <p class="card-text">${opportunity.description}</p>
-                    <p class="card-text"><small class="text-muted">${opportunity.date} at ${opportunity.time}</small></p>
-                    <button class="btn btn-primary" onclick="openModal('${opportunity.title}')">Sign Up</button>
-                </div>
-            </div>
-        `;
-        container.innerHTML += cardHtml;
-    });
-});
-
-document.getElementById('opportunitiesContainer').addEventListener('click', function(event) {
-    if (event.target.classList.contains('btn-primary')) {
-        const title = event.target.closest('.card').querySelector('.card-title').textContent;
-        openModal(title);
+    if (container) {
+        container.addEventListener('click', function (event) {
+            const target = event.target;
+            if (target.classList.contains('btn-primary')) {
+                const card = target.closest('.card');
+                const titleElement = card === null || card === void 0 ? void 0 : card.querySelector('.card-title');
+                const title = (titleElement === null || titleElement === void 0 ? void 0 : titleElement.textContent) || '';
+                openModal(title);
+            }
+        });
+    }
+    const signUpForm = document.getElementById('signUpForm');
+    if (signUpForm) {
+        signUpForm.addEventListener('submit', function (event) {
+            event.preventDefault();
+            const emailInput = document.getElementById('emailAddress');
+            const email = emailInput.value;
+            if (email.includes('@')) {
+                console.log('Form is valid');
+                $('#signUpModal').modal('hide');
+                alert('Thank you for signing up!');
+            }
+            else {
+                alert('Please enter a valid email address.');
+            }
+        });
+    }
+    const cancelButton = document.getElementById('cancelButton');
+    if (cancelButton) {
+        cancelButton.addEventListener('click', function () {
+            $('#signUpModal').modal('hide');
+        });
     }
 });
-
-// Opens the modal to allow someone to volunteer for an opportunity 
-function openModal(title) {
+window.openModal = function (title) {
     const modalTitle = document.getElementById('modalTitle');
-    modalTitle.innerText = `Sign Up for ${title}`;
-    $('#signUpModal').modal('show');
-}
-
-// Handles all form signups for an oppurtunity
-document.getElementById('signUpForm').addEventListener('submit', function(event) {
-    event.preventDefault(); 
-    let email = document.getElementById('emailAddress').value;
-    if (email.includes('@')) {
-        console.log('Form is valid');
-        $('#signUpModal').modal('hide'); 
-        alert('Thank you for signing up!');
-    } else {
-        alert('Please enter a valid email address.');
+    if (modalTitle) {
+        modalTitle.innerText = `Sign Up for ${title}`;
+        $('#signUpModal').modal('show');
     }
-});
-
-// Hide the modal if the cancel button was clicked
-document.getElementById('cancelButton').addEventListener('click', function() {
-    $('#signUpModal').modal('hide');
-});
+};
+function openModal(title) {
+    throw new Error("Function not implemented.");
+}
+//# sourceMappingURL=opportunities.js.map

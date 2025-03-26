@@ -1,0 +1,42 @@
+<!--
+Name: Dylan Gill & Joel Hieckert
+Class Code: INFT-2202-03
+Date: February 23, 2025
+Description: contact-content.html - SPA fragment for Contact page
+-->
+
+<h1>Contact Us about anything Salvation Army related!</h1>
+
+<div class="row justify-content-lg-center g-3">
+    <form class="col-lg-6 col-md-10 col-sm-10" id="contactForm">
+        <div class="input-group mb-3">
+            <span class="input-group-text">Full name</span>
+            <input id="fullName" name="fullName" type="text" class="form-control" required>
+        </div>
+        <div class="input-group mb-3">
+            <span class="input-group-text">Contact number</span>
+            <input id="contactNumber" name="contactNumber" type="tel" class="form-control" required>
+        </div>
+        <div class="input-group mb-3">
+            <span class="input-group-text">Email address</span>
+            <input id="emailAddress" name="emailAddress" type="email" class="form-control" required>
+        </div>
+        <div class="input-group mb-3">
+            <span class="input-group-text">Your Message</span>
+            <textarea id="message" name="message" class="form-control"></textarea>
+        </div>
+        <div class="mb-3">
+            <button id="sendButton" type="submit" class="btn btn-primary">
+                <i class="fas fa-envelope"></i> Send
+            </button>
+            <button id="cancelButton" type="reset" class="btn btn-warning">
+                <i class="fas fa-undo fa-lg"></i> Cancel
+            </button>
+        </div>
+    </form>
+    <div class="col-lg-4 col-md-4 d-flex align-items-center">
+        <a href="./contactlist-main.html" id="showContactListBtn" class="btn btn-primary btn-lg" style="padding: 5px 10px; font-size: 0.8em;">
+        <i class="fa-solid fa-users"></i> Show Contact List
+        </a>
+    </div>
+</div>

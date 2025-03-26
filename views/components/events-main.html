@@ -1,0 +1,17 @@
+<!--
+Name: Dylan Gill & Joel Hieckert
+Class Code: INFT-2202-03
+Date: February 23, 2025
+Description: events-content.html - SPA fragment for the Events page
+-->
+
+<h1 class="mb-5">Welcome to the Events of Salvation Army!</h1>
+
+<div class="filters mb-3">
+    <button class="btn btn-outline-primary active" onclick="filterEvents('all', this)">All</button>
+    <button class="btn btn-outline-primary" onclick="filterEvents('Fundraisers', this)">Fundraisers</button>
+    <button class="btn btn-outline-primary" onclick="filterEvents('Donations', this)">Workshops</button>
+    <button class="btn btn-outline-primary" onclick="filterEvents('Cleanups', this)">Cleanups</button>
+</div>
+
+<div id="eventsCalendar"></div>

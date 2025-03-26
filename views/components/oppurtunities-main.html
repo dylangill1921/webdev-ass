@@ -1,0 +1,36 @@
+<!--
+Name: Dylan Gill & Joel Hieckert
+Class Code: INFT-2202-03
+Date: February 23, 2025
+Description: opportunities-content.html - SPA fragment for the Opportunities page
+-->
+
+<h1 class="mb-5">Welcome to the Opportunities section of Salvation Army!</h1>
+
+<div id="opportunitiesContainer" class="row"></div>
+
+<div class="modal fade" id="signUpModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitle">Volunteer</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="signUpForm" class="row g-3 needs-validation" novalidate>
+                    <div class="col-md-6">
+                        <label for="fullName" class="form-label">Full Name</label>
+                        <input type="text" class="form-control" id="fullName" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="emailAddress" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="emailAddress" required>
+                    </div>
+                    <div class="col-12">
+                        <button class="btn btn-primary" type="submit">Volunteer</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
