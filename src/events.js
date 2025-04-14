@@ -260,7 +260,6 @@ export function initializeEventsPage() {
                 </div>
             </div>
         </template>
-
         <!-- Loading Spinner Template -->
         <template id="loadingSpinner">
             <div class="text-center my-4">

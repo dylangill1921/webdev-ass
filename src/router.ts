@@ -65,12 +65,13 @@ class Router {
         const styleLink = document.createElement('link');
         styleLink.id = 'component-styles';
         styleLink.rel = 'stylesheet';
-        styleLink.href = `content/${componentName}.css`;
+        styleLink.type = 'text/css';
+        styleLink.href = `./content/${componentName}.css`;
         
         // Add to head
         document.head.appendChild(styleLink);
         this.currentStyle = componentName;
-        console.log(`Loaded styles: content/${componentName}.css`);
+        console.log(`Loaded styles: ./content/${componentName}.css`);
     }
 
     private handleRouteChange(): void {
