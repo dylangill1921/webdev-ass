@@ -13,11 +13,13 @@ Description: index.html
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Home</title>
-    <!-- Stylesheets -->
-    <link rel="stylesheet" href="content/navbar.css">
-    <link rel="stylesheet" href="content/app.css">
+    <!-- Essential styles -->
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="node_modules/@fortawesome/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="content/navbar.css">
+    <link rel="stylesheet" href="content/app.css"> 
+    <link rel="stylesheet" href="content/lightbox.css">
+    <link rel="stylesheet" href="content/gal.css">
   </head>
   <body>
     <header>
@@ -56,9 +58,18 @@ Description: index.html
                           <li><a class="dropdown-item" href="#/terms">Terms of Service</a></li>
                       </ul>
                     </li>
-                    <li class="nav-item" id="authNav">
-                      <a class="nav-link" href="#/login">Log In</a>
-                  </li>
+                    <li class="nav-item" id="userWelcome" style="display: none;">
+                        <span class="nav-link"></span>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#/login">Log In</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#/register">Register</a>
+                    </li>
+                    <li class="nav-item" style="display: none;">
+                        <a class="nav-link" href="#" id="logoutLink">Log Out</a>
+                    </li>
                 </ul>
             </div>
         </div>

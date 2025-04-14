@@ -1,33 +1,60 @@
 <!-- login-main.html -->
-<h1>Login to Volunteer Connect</h1>
-<div class="row justify-content-center">
-    <div class="col-md-6 col-sm-12">
-        <div class="login p-4 shadow-sm">
-        <form id="loginForm" novalidate>
-            <div class="form-group mb-3">
-            <div class="input-group">
-                <span class="input-group-text" style="background-color: #e31837; color: #ffffff; border: 1px solid #e31837;">
-                <i class="fa fa-user"></i>
-                </span>
-                <input type="text" class="form-control" id="contactName" name="userName" required placeholder="Enter your username">
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-5">
+            <div class="card shadow-sm">
+                <div class="card-body p-4">
+                    <h1 class="card-title text-center mb-4">Welcome Back!</h1>
+                    <p class="text-center text-muted mb-4">Sign in to continue to Volunteer Connect</p>
+                    
+                    <form id="loginForm" novalidate>
+                        <div class="mb-3">
+                            <label for="userName" class="form-label">Username or Email</label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fas fa-user"></i>
+                                </span>
+                                <input type="text" 
+                                       class="form-control" 
+                                       id="userName" 
+                                       name="userName" 
+                                       required 
+                                       placeholder="Enter your username or email">
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="password" class="form-label">Password</label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fas fa-lock"></i>
+                                </span>
+                                <input type="password" 
+                                       class="form-control" 
+                                       id="password" 
+                                       name="password" 
+                                       required 
+                                       placeholder="Enter your password">
+                            </div>
+                        </div>
+
+                        <div class="d-grid mb-3">
+                            <button type="submit" class="btn btn-primary btn-lg">Sign In</button>
+                        </div>
+
+                        <div class="text-center">
+                            <a href="#" class="small">Forgot Password?</a>
+                        </div>
+                    </form>
+
+                    <hr class="my-4">
+                    
+                    <p class="text-center text-muted small">
+                        Don't have an account? 
+                        <a href="#/register">Register Here!</a>
+                    </p>
+                </div>
             </div>
-            </div>
-            <div class="form-group mb-3">
-            <div class="input-group">
-                <span class="input-group-text" style="background-color: #e31837; color: #ffffff; border: 1px solid #e31837;">
-                <i class="fa fa-lock"></i>
-                </span>
-                <input type="password" class="form-control" id="password" name="password" required placeholder="Enter your password">
-            </div>
-            </div>
-            <div class="text-end">
-            <button id="submitButton" type="submit" class="btn btn-primary">Login</button>
-            </div>
-        </form>
         </div>
-        <p class="text-center text-muted small mt-3">
-        Don't have an account?
-        <a href="./register-main.html">Register Here!</a>
-        </p>
     </div>
 </div>

@@ -1,8 +1,8 @@
 /*
     Name: Dylan Gill & Joel Hieckert
     Class Code: INFT-2202-03
-    Description: contact.ts - Handles contact form and contact list
-    Date: February 23, 2025
+    Description: contact.ts
+    Date: March 22, 2025
 */
 "use strict";
 class Contact {
@@ -60,7 +60,6 @@ export function DisplayContactListPage() {
         contactList.innerHTML = data;
     }
 }
-// Optional: only export if needed
 export function initializeContactPage() {
     console.log("Contact page initialized...");
     const contactForm = document.getElementById('contactForm');
@@ -103,7 +102,7 @@ export function initializeContactPage() {
         });
     }
 }
-// These must stay global if used as onclick="..."
+// These must stay global if used 
 window.deleteContact = function (key) {
     if (confirm('Are you sure you want to delete this contact?')) {
         localStorage.removeItem(key);

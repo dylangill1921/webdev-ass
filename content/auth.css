@@ -74,3 +74,111 @@ main.container a:hover {
 main.container .text-muted {
     color: #666 !important; 
 }
+
+/* Card styling */
+.card {
+    border: 2px solid #e31837;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-body {
+    padding: 2rem;
+}
+
+.card-title {
+    color: #e31837;
+    font-weight: bold;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+/* Form styling */
+.form-label {
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+.input-group-text {
+    background-color: #e31837 !important;
+    color: #ffffff !important;
+    border: 1px solid #e31837 !important;
+}
+
+.form-control {
+    border: 1px solid #e31837;
+}
+
+.form-control:focus {
+    border-color: #b3122f;
+    box-shadow: 0 0 5px rgba(227, 24, 55, 0.3);
+}
+
+/* Button styling */
+.btn-primary {
+    background-color: #e31837;
+    border-color: #e31837;
+    color: #ffffff;
+    font-weight: bold;
+    padding: 0.75rem 1.5rem;
+    transition: all 0.2s ease;
+}
+
+.btn-primary:hover {
+    background-color: #b3122f;
+    border-color: #b3122f;
+}
+
+.btn-lg {
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+}
+
+/* Link styling */
+a {
+    color: #e31837;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+a:hover {
+    color: #b3122f;
+    text-decoration: none;
+}
+
+/* Divider styling */
+hr {
+    opacity: 0.15;
+    margin: 1.5rem 0;
+}
+
+/* Icon styling */
+.input-group .fas {
+    color: #e31837;
+    width: 1rem;
+    text-align: center;
+}
+
+/* Ensure consistent spacing */
+.mb-4 {
+    margin-bottom: 1.5rem !important;
+}
+
+.mt-4 {
+    margin-top: 1.5rem !important;
+}
+
+/* Add focus animation */
+.form-control:focus,
+.input-group:focus-within {
+    transform: translateY(-1px);
+}
+
+/* Remove default main container styling if not needed */
+/*
+main.container {
+    text-align: center;
+    padding: 40px 20px;
+}
+*/

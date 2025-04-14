@@ -1,4 +1,9 @@
-// src/gallery.ts
+/*
+    Name: Dylan Gill & Joel Hieckert
+    Class Code: INFT-2202-03
+    Description: gallery.ts
+    Date: March 22, 2025
+*/
 "use strict";
 export function loadGallery() {
     const galleryContainer = document.getElementById("gallery");

@@ -1,8 +1,8 @@
 /*
     Name: Dylan Gill & Joel Hieckert
     Class Code: INFT-2202-03
-    Description: opportunities.ts - Handles opportunities page
-    Date: February 23, 2025
+    Description: opportunities.ts
+    Date: March 22, 2025
 */
 "use strict";
 const opportunities = [

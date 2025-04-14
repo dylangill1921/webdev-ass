@@ -13,8 +13,23 @@ interface RouteMap {
     [path: string]: () => void;
 }
 
+// Map of routes to their corresponding CSS files
+const routeStyles: { [key: string]: string } = {
+    '/': 'app',
+    '/gallery': 'gal',
+    '/opportunities': 'opp',
+    '/contact': 'cont',
+    '/events': 'events',
+    '/about': 'app',
+    '/login': 'login',
+    '/register': 'register',
+    '/privacy': 'terms',
+    '/terms': 'terms'
+};
+
 class Router {
     private routes: RouteMap = {};
+    private currentStyle: string | null = null;
 
     constructor() {
         this.handleRouteChange = this.handleRouteChange.bind(this);
@@ -26,12 +41,52 @@ class Router {
 
     public init(): void {
         window.addEventListener('hashchange', this.handleRouteChange);
-        this.handleRouteChange();
+        // Check if there's no hash on initial load
+        if (!window.location.hash) {
+            window.location.hash = '#/';
+        } else {
+            this.handleRouteChange();
+        }
+    }
+
+    private loadComponentStyles(componentName: string): void {
+        // Remove existing component styles if any
+        const existingStyle = document.getElementById('component-styles');
+        if (existingStyle) {
+            existingStyle.remove();
+        }
+
+        // Don't load styles if it's the same component
+        if (this.currentStyle === componentName) {
+            return;
+        }
+
+        // Create new style link
+        const styleLink = document.createElement('link');
+        styleLink.id = 'component-styles';
+        styleLink.rel = 'stylesheet';
+        styleLink.href = `content/${componentName}.css`;
+        
+        // Add to head
+        document.head.appendChild(styleLink);
+        this.currentStyle = componentName;
+        console.log(`Loaded styles: content/${componentName}.css`);
     }
 
     private handleRouteChange(): void {
-        const path = window.location.hash.slice(1) || '/';
+        let path = window.location.hash.slice(1) || '/';
+        
+        // Ensure path starts with '/'
+        if (!path.startsWith('/')) {
+            path = '/' + path;
+        }
+        
         const handler = this.routes[path] || this.routes['/404'];
+        
+        // Load appropriate styles for the route
+        const styleName = routeStyles[path] || 'app';
+        this.loadComponentStyles(styleName);
+
         if (handler) {
             handler();
         }
@@ -39,14 +94,24 @@ class Router {
     }
 
     public navigate(path: string): void {
+        // Ensure path starts with '#/'
+        if (!path.startsWith('#/')) {
+            path = '#/' + path.replace(/^[/#]+/, '');
+        }
         window.location.hash = path;
     }
 
     private setActiveLink(currentPath: string): void {
         const navLinks = document.querySelectorAll('.nav-link');
         navLinks.forEach(link => {
-            const linkPath = link.getAttribute('href')?.slice(1);
-            if (linkPath === currentPath) {
+            const href = link.getAttribute('href');
+            if (!href) return;
+            
+            // Compare paths without the hash
+            const linkPath = href.replace(/^[/#]+/, '');
+            const currentPathClean = currentPath.replace(/^[/#]+/, '');
+            
+            if (linkPath === currentPathClean) {
                 link.classList.add('active');
                 link.setAttribute('aria-current', 'page');
             } else {

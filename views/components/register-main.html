@@ -1,52 +1,83 @@
 <!-- register-main.html -->
-<h1>Register for Volunteer Connect</h1>
-<div class="row justify-content-center">
-    <div class="col-md-6 col-sm-12">
-        <div class="login p-4 shadow-sm">
-            <form id="registerForm" novalidate>
-                <p class="hint-text mb-3">Create your own account, It's free and only takes a minute!</p>
-                <div class="form-group mb-3">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="input-group">
-                                <span class="input-group-text" style="background-color: #e31837; color: #ffffff; border: 1px solid #e31837;">First Name</span>
-                                <input class="form-control" type="text" name="firstName" id="FirstName" placeholder="First Name" required>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-sm">
+                <div class="card-body p-4">
+                    <h1 class="card-title text-center mb-4">Register</h1>
+                    <p class="text-center text-muted mb-4">Create your account. It's free and takes just a minute!</p>
+                    <form id="registerForm" novalidate>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="FirstName" class="form-label">First Name</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-user"></i>
+                                    </span>
+                                    <input class="form-control" type="text" name="firstName" id="FirstName" placeholder="First Name" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="lastName" class="form-label">Last Name</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-user"></i>
+                                    </span>
+                                    <input class="form-control" type="text" name="lastName" id="lastName" placeholder="Last Name" required>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
+
+                        <div class="mb-3">
+                            <label for="emailAddress" class="form-label">Email</label>
                             <div class="input-group">
-                                <span class="input-group-text" style="background-color: #e31837; color: #ffffff; border: 1px solid #e31837;">Last Name</span>
-                                <input class="form-control" type="text" name="lastName" id="lastName" placeholder="Last Name" required>
+                                <span class="input-group-text">
+                                    <i class="fas fa-envelope"></i>
+                                </span>
+                                <input type="email" class="form-control" id="emailAddress" name="emailAddress" required placeholder="you@example.com">
                             </div>
                         </div>
-                    </div>
+
+                        <div class="mb-3">
+                            <label for="phoneNumber" class="form-label">Phone Number</label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fas fa-phone"></i>
+                                </span>
+                                <input type="tel" class="form-control" id="phoneNumber" name="phoneNumber" required placeholder="Enter your phone number">
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fas fa-lock"></i>
+                                </span>
+                                <input type="password" class="form-control" id="password" name="password" required placeholder="Create a password">
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="confirmPassword" class="form-label">Confirm Password</label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fas fa-lock"></i>
+                                </span>
+                                <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required placeholder="Confirm your password">
+                            </div>
+                        </div>
+
+                        <div class="d-grid mb-3">
+                            <button type="submit" class="btn btn-primary btn-lg">Register</button>
+                        </div>
+                    </form>
+                    <p class="text-center text-muted small mt-4">
+                        Already have an account?
+                        <a href="#/login">Sign In</a>
+                    </p>
                 </div>
-                <div class="form-group mb-3">
-                    <div class="input-group">
-                        <span class="input-group-text" style="background-color: #e31837; color: #ffffff; border: 1px solid #e31837;">Email</span>
-                        <input type="email" class="form-control" id="emailAddress" name="emailAddress" required placeholder="Email">
-                    </div>
-                </div>
-                <div class="form-group mb-3">
-                    <div class="input-group">
-                        <span class="input-group-text" style="background-color: #e31837; color: #ffffff; border: 1px solid #e31837;">Password</span>
-                        <input type="password" class="form-control" id="password" name="password" required placeholder="Password">
-                    </div>
-                </div>
-                <div class="form-group mb-3">
-                    <div class="input-group">
-                        <span class="input-group-text" style="background-color: #e31837; color: #ffffff; border: 1px solid #e31837;">Confirm Password</span>
-                        <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required placeholder="Confirm Password">
-                    </div>
-                </div>
-                <div class="text-end">
-                    ype="submit" class="btn btn-primary">Register</button>
-                </div>
-            </form>
+            </div>
         </div>
-        <p class="text-center text-muted small mt-3">
-            Already have an account?
-            <a href="./login-main.html">Sign In</a>
-        </p>
     </div>
 </div>
