@@ -9,6 +9,7 @@ import { DisplayContactListPage, initializeContactPage } from './contact.js';
 import { DisplayOpportunitiesPage } from './opportunities.js';
 import { loadGallery } from './gallery.js';
 import { handleLogin, handleSignup, updateNavigation, handleLogout, getCurrentUserName, isLoggedIn } from './auth.js';
+import { initializeEventsPage } from './events.js';
 "use strict";
 function displayHomePage() {
     console.log("Home Page");
@@ -35,7 +36,10 @@ function displayopportunitiesPage() {
 }
 function displayEventsPage() {
     console.log("Events Page");
-    loadContent('./views/components/events-main.html', 'mainContent');
+    loadContent('./views/components/events-main.html', 'mainContent')
+        .then(() => {
+        initializeEventsPage();
+    });
 }
 function displayAboutPage() {
     console.log("Displaying About Page...");

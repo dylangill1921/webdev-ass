@@ -130,6 +130,10 @@ export function handleLogout(): void {
     alert('You have been logged out successfully.');
     const router = new Router();
     router.navigate('/');
+    // Add page refresh after a short delay to ensure navigation completes
+    setTimeout(() => {
+        window.location.reload();
+    }, 100);
 }
 
 // Function to check if user is logged in

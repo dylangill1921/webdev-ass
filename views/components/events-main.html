@@ -1,17 +1,137 @@
 <!--
 Name: Dylan Gill & Joel Hieckert
 Class Code: INFT-2202-03
-Date: February 23, 2025
-Description: events-content.html - SPA fragment for the Events page
+Date: March 22, 2025
+Description: events-main.html - SPA fragment for the Events page
 -->
 
-<h1 class="mb-5">Welcome to the Events of Salvation Army!</h1>
+<div class="container mt-5">
+    <div class="row">
+        <!-- Event Creation Form -->
+        <div class="col-lg-4 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0"><i class="fas fa-calendar-plus me-2"></i>Create New Event</h3>
+                </div>
+                <div class="card-body">
+                    <form id="eventForm" class="needs-validation" novalidate>
+                        <div class="mb-3">
+                            <label for="eventName" class="form-label">Event Name</label>
+                            <input type="text" class="form-control" id="eventName" required 
+                                   minlength="3" maxlength="50">
+                            <div class="invalid-feedback">
+                                Please provide an event name (3-50 characters).
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="eventDate" class="form-label">Date</label>
+                            <input type="date" class="form-control" id="eventDate" required>
+                            <div class="invalid-feedback">
+                                Please select a valid date.
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="eventTime" class="form-label">Time</label>
+                            <input type="time" class="form-control" id="eventTime" required>
+                            <div class="invalid-feedback">
+                                Please select a valid time.
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="eventLocation" class="form-label">Location</label>
+                            <input type="text" class="form-control" id="eventLocation" required
+                                   minlength="5" maxlength="100">
+                            <div class="invalid-feedback">
+                                Please provide a valid location (5-100 characters).
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="eventDescription" class="form-label">Description</label>
+                            <textarea class="form-control" id="eventDescription" rows="3" required
+                                      minlength="10" maxlength="500"></textarea>
+                            <div class="invalid-feedback">
+                                Please provide a description (10-500 characters).
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="fas fa-plus-circle me-2"></i>Create Event
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
 
-<div class="filters mb-3">
-    <button class="btn btn-outline-primary active" onclick="filterEvents('all', this)">All</button>
-    <button class="btn btn-outline-primary" onclick="filterEvents('Fundraisers', this)">Fundraisers</button>
-    <button class="btn btn-outline-primary" onclick="filterEvents('Donations', this)">Workshops</button>
-    <button class="btn btn-outline-primary" onclick="filterEvents('Cleanups', this)">Cleanups</button>
+        <!-- Events List -->
+        <div class="col-lg-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                    <h3 class="mb-0"><i class="fas fa-calendar-alt me-2"></i>Upcoming Events</h3>
+                    <div class="btn-group">
+                        <button class="btn btn-light btn-sm" id="viewToggleList">
+                            <i class="fas fa-list"></i>
+                        </button>
+                        <button class="btn btn-light btn-sm" id="viewToggleGrid">
+                            <i class="fas fa-th"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row" id="eventsContainer">
+                        <!-- Events will be dynamically inserted here -->
+                        <div class="col-12 text-center" id="noEventsMessage">
+                            <p class="text-muted mt-3">No events planned yet. Be the first to create one!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-<div id="eventsCalendar"></div>
+<!-- Event Template -->
+<template id="eventTemplate">
+    <div class="col-12 col-md-6 mb-4 event-item">
+        <div class="card h-100 shadow-sm hover-card">
+            <div class="card-body">
+                <h5 class="card-title event-name"></h5>
+                <div class="event-details">
+                    <p class="mb-2">
+                        <i class="fas fa-calendar text-primary me-2"></i>
+                        <span class="event-date"></span>
+                    </p>
+                    <p class="mb-2">
+                        <i class="fas fa-clock text-primary me-2"></i>
+                        <span class="event-time"></span>
+                    </p>
+                    <p class="mb-2">
+                        <i class="fas fa-map-marker-alt text-primary me-2"></i>
+                        <span class="event-location"></span>
+                    </p>
+                    <p class="mb-0 event-description"></p>
+                </div>
+            </div>
+            <div class="card-footer bg-transparent">
+                <button class="btn btn-sm btn-outline-primary join-event-btn">
+                    <i class="fas fa-user-plus me-2"></i>Join Event
+                </button>
+                <button class="btn btn-sm btn-outline-danger ms-2 delete-event-btn">
+                    <i class="fas fa-trash-alt me-2"></i>Delete
+                </button>
+            </div>
+        </div>
+    </div>
+</template>
+
+<!-- Loading Spinner Template -->
+<template id="loadingSpinner">
+    <div class="text-center my-4">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+</template>
