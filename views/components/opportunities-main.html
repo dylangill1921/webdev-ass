@@ -1,0 +1,35 @@
+<div class="container mt-5">
+    <h1 class="text-center text-danger mb-4">Welcome to the Opportunities section of Salvation Army!</h1>
+    <div class="row" id="opportunitiesContainer">
+        <!-- Opportunities will be dynamically inserted here -->
+    </div>
+</div>
+
+<!-- Volunteer Signup Modal -->
+<div class="modal fade" id="volunteerModal" tabindex="-1" aria-labelledby="volunteerModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="volunteerModalLabel">Volunteer Registration</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="volunteerForm">
+                    <input type="hidden" id="opportunityId" name="opportunityId">
+                    <div class="mb-3">
+                        <label for="fullName" class="form-label">Full Name</label>
+                        <input type="text" class="form-control" id="fullName" name="fullName" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email Address</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="confirmVolunteer">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div> 

@@ -29,6 +29,29 @@
             });
         }
     }
+    function handleLogout() {
+        // Save contacts before logout
+        const contacts = {};
+        Object.keys(localStorage).forEach(key => {
+            if (key.startsWith('contact_')) {
+                contacts[key] = localStorage.getItem(key);
+            }
+        });
+
+        // Clear only user-specific data
+        localStorage.removeItem('currentUser');
+        
+        // Restore contacts
+        Object.keys(contacts).forEach(key => {
+            localStorage.setItem(key, contacts[key]);
+        });
+
+        updateNavbar(false);
+        window.location.href = '/index.html';
+        setTimeout(() => {
+            window.location.reload();
+        }, 100);
+    }
     function handleSignup() {
         const signupForm = document.getElementById('registerForm');
         if (signupForm) {
@@ -49,6 +72,7 @@
                 const newUser = { fullName, username: email, email, password };
                 users.push(newUser);
                 localStorage.setItem('users', JSON.stringify(users));
+                localStorage.setItem('currentUser', JSON.stringify(newUser));
                 alert('Signup successful! Please log in.');
                 window.location.href = '/views/content/login.html';
             });
@@ -66,10 +90,7 @@
         }
     }
     window.logout = function () {
-        localStorage.removeItem('currentUser');
-        updateNavbar(false);
-        alert('Logged out successfully!');
-        window.location.href = '/index.html';
+        handleLogout();
     };
     function checkLoginStatus() {
         const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');

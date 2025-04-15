@@ -116,6 +116,11 @@ export function handleSignup(): void {
         localStorage.setItem('users', JSON.stringify(users));
         console.log("User registered successfully");
 
+        // Track new member in statistics
+        if ((window as any).statistics) {
+            (window as any).statistics.trackNewMember();
+        }
+
         alert('Registration successful! Please log in with your email and password.');
         const router = new Router();
         router.navigate('/login');

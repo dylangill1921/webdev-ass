@@ -1,0 +1,70 @@
+<!--
+Name: Dylan Gill & Joel Hieckert
+Class Code: INFT-2202-03
+Date: February 23, 2025
+Description: statistics-main.html - SPA fragment for Statistics page
+-->
+
+<div class="container mt-5">
+    <div class="text-center mb-4">
+        <h1 class="display-4">
+            <i class="fas fa-chart-line"></i> Salvations Army Statistics
+        </h1>
+        <p class="lead text-muted">Tracking our community's growth and engagement!</p>
+    </div>
+
+    <div class="row justify-content-center">
+        <!-- Website Activity Card -->
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body text-center">
+                    <h3 class="card-title">Website Activity</h3>
+                    <p class="text-muted">Total visits to our platform</p>
+                    <div class="display-4 mb-3" id="totalVisits">0</div>
+                    <div class="chart-container" style="position: relative; height:200px;">
+                        <canvas id="visitsChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Volunteer Engagement Card -->
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body text-center">
+                    <h3 class="card-title">Volunteer Engagement</h3>
+                    <p class="text-muted">Number of volunteer signups</p>
+                    <div class="display-4 mb-3" id="totalVolunteers">0</div>
+                    <div class="chart-container" style="position: relative; height:200px;">
+                        <canvas id="volunteerChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Member Growth Card -->
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body text-center">
+                    <h3 class="card-title">Member Growth</h3>
+                    <p class="text-muted">Total registered members</p>
+                    <div class="display-4 mb-3" id="totalMembers">0</div>
+                    <div class="chart-container" style="position: relative; height:200px;">
+                        <canvas id="memberChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Initialize statistics after page load -->
+<script type="module">
+    import { StatisticsManager } from '../../src/statistics.js';
+    
+    // Wait for a short delay to ensure DOM is ready
+    setTimeout(() => {
+        // Use getInstance instead of constructor
+        StatisticsManager.getInstance();
+    }, 100);
+</script>

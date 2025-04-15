@@ -24,7 +24,8 @@ const routeStyles: { [key: string]: string } = {
     '/login': 'login',
     '/register': 'register',
     '/privacy': 'terms',
-    '/terms': 'terms'
+    '/terms': 'terms',
+    '/statistics': 'statistics'
 };
 
 class Router {
@@ -87,6 +88,12 @@ class Router {
         // Load appropriate styles for the route
         const styleName = routeStyles[path] || 'app';
         this.loadComponentStyles(styleName);
+
+        // Track page visit in statistics
+        if ((window as any).statistics) {
+            console.log('Tracking page visit:', path);
+            (window as any).statistics.trackPageVisit(path);
+        }
 
         if (handler) {
             handler();

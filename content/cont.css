@@ -76,3 +76,194 @@ main.container .btn-warning:hover {
     color: #ffffff;
 }
 
+/* Contact Form Styles */
+.custom-card {
+    border-color: #dc3545;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.custom-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(220, 53, 69, 0.15) !important;
+}
+
+.custom-card .card-header {
+    background: linear-gradient(45deg, #dc3545, #ff6b6b);
+    color: white;
+    border-bottom: none;
+}
+
+.custom-card .input-group-text {
+    background: linear-gradient(45deg, #dc3545, #ff6b6b);
+    color: white;
+    border-color: #dc3545;
+    transition: all 0.3s ease;
+}
+
+.custom-card .input-group:hover .input-group-text {
+    background: linear-gradient(45deg, #ff6b6b, #dc3545);
+}
+
+.custom-card .form-control {
+    border-color: #dee2e6;
+    transition: all 0.3s ease;
+}
+
+.custom-card .form-control:focus {
+    border-color: #dc3545;
+    box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25);
+}
+
+.custom-card .form-control:hover {
+    border-color: #ff6b6b;
+}
+
+.custom-btn-red {
+    background: linear-gradient(45deg, #dc3545, #ff6b6b);
+    border: none;
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.custom-btn-red:hover {
+    background: linear-gradient(45deg, #ff6b6b, #dc3545);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(220, 53, 69, 0.2);
+    color: white;
+}
+
+.custom-btn-outline-red {
+    color: #dc3545;
+    border: 2px solid #dc3545;
+    background: transparent;
+    transition: all 0.3s ease;
+}
+
+.custom-btn-outline-red:hover {
+    background: linear-gradient(45deg, #dc3545, #ff6b6b);
+    border-color: transparent;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(220, 53, 69, 0.2);
+}
+
+/* Modal Styles */
+.modal.fade .modal-dialog {
+    transform: scale(0.8);
+    transition: transform 0.3s ease;
+}
+
+.modal.show .modal-dialog {
+    transform: scale(1);
+}
+
+.modal-content.custom-card {
+    border: none;
+    overflow: hidden;
+}
+
+.modal-content.custom-card .modal-header {
+    background: linear-gradient(45deg, #dc3545, #ff6b6b);
+    color: white;
+    border-bottom: none;
+}
+
+.table-danger {
+    background: linear-gradient(45deg, #ffebee, #fff);
+}
+
+/* Table Styles */
+.table-hover tbody tr {
+    transition: all 0.3s ease;
+}
+
+.table-hover tbody tr:hover {
+    background-color: #ffebee;
+    transform: translateX(5px);
+}
+
+/* Action Buttons in Table */
+.btn-edit {
+    background: linear-gradient(45deg, #ffc107, #ffdb4d);
+    border: none;
+    color: #000;
+    transition: all 0.3s ease;
+}
+
+.btn-edit:hover {
+    background: linear-gradient(45deg, #ffdb4d, #ffc107);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(255, 193, 7, 0.2);
+    color: #000;
+}
+
+.btn-delete {
+    background: linear-gradient(45deg, #dc3545, #ff6b6b);
+    border: none;
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.btn-delete:hover {
+    background: linear-gradient(45deg, #ff6b6b, #dc3545);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(220, 53, 69, 0.2);
+}
+
+/* Alert Animation */
+.alert {
+    animation: slideDown 0.5s ease forwards;
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Input Focus Animation */
+.form-control:focus {
+    animation: pulse 1s ease;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.4);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(220, 53, 69, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(220, 53, 69, 0);
+    }
+}
+
+/* Button click effect */
+.btn {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.6s ease, height 0.6s ease;
+}
+
+.btn:active::after {
+    width: 200%;
+    height: 200%;
+}
+
