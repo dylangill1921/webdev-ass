@@ -1,5 +1,5 @@
 import { Router, loadContent } from './router.js';
-import { DisplayContactListPage, initializeContactPage } from './contact.js';
+import { initializeContactPage } from './contact.js';
 import { DisplayOpportunitiesPage } from './opportunities.js';
 import { loadGallery } from './gallery.js';
 import { handleLogin, handleSignup, updateNavigation, handleLogout, getCurrentUserName, isLoggedIn } from './auth.js';
@@ -45,12 +45,6 @@ function displayContactPage() {
         initializeContactPage();
     });
 }
-function displayContactListPage() {
-    console.log("Display Contact List Page...");
-    loadContent('./views/components/contactlist-main.html', 'mainContent').then(() => {
-        DisplayContactListPage();
-    });
-}
 function displayGalleryPage() {
     console.log("Displaying Gallery Page...");
     loadContent('./views/components/gallery-main.html', 'mainContent').then(() => {
@@ -69,7 +63,10 @@ function displayLoginPage() {
     console.log("Displaying Login Page...");
     loadContent('./views/components/login-main.html', 'mainContent')
         .then(() => {
-        handleLogin();
+        const loginForm = document.getElementById('loginForm');
+        if (loginForm) {
+            loginForm.addEventListener('submit', handleLogin);
+        }
     });
 }
 function displayRegisterPage() {
@@ -77,6 +74,21 @@ function displayRegisterPage() {
     loadContent('./views/components/register-main.html', 'mainContent')
         .then(() => {
         handleSignup();
+    });
+}
+function displayStatisticsPage() {
+    console.log("Displaying Statistics Page...");
+    loadContent('./views/components/statistics-main.html', 'mainContent')
+        .then(() => {
+        const chartScript = document.createElement('script');
+        chartScript.src = 'https://cdn.jsdelivr.net/npm/chart.js';
+        chartScript.onload = () => {
+            const script = document.createElement('script');
+            script.src = '../../src/statistics.js';
+            script.type = 'module';
+            document.body.appendChild(script);
+        };
+        document.body.appendChild(chartScript);
     });
 }
 function loadMemes() {
@@ -110,12 +122,12 @@ function Start() {
     router.addRoute('/events', displayEventsPage);
     router.addRoute('/about', displayAboutPage);
     router.addRoute('/contact', displayContactPage);
-    router.addRoute('/contactlist', displayContactListPage);
     router.addRoute('/gallery', displayGalleryPage);
     router.addRoute('/privacy', displayPrivacyPage);
     router.addRoute('/terms', displayTermsPage);
     router.addRoute('/login', displayLoginPage);
     router.addRoute('/register', displayRegisterPage);
+    router.addRoute('/statistics', displayStatisticsPage);
     router.addRoute('/404', () => {
         loadContent('./views/components/404.html', 'mainContent');
     });

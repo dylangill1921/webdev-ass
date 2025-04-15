@@ -9,7 +9,8 @@ const routeStyles = {
     '/login': 'login',
     '/register': 'register',
     '/privacy': 'terms',
-    '/terms': 'terms'
+    '/terms': 'terms',
+    '/statistics': 'statistics'
 };
 class Router {
     constructor() {
@@ -54,6 +55,10 @@ class Router {
         const handler = this.routes[path] || this.routes['/404'];
         const styleName = routeStyles[path] || 'app';
         this.loadComponentStyles(styleName);
+        if (window.statistics) {
+            console.log('Tracking page visit:', path);
+            window.statistics.trackPageVisit(path);
+        }
         if (handler) {
             handler();
         }

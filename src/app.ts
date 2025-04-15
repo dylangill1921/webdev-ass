@@ -81,7 +81,11 @@ function displayLoginPage(): void {
     console.log("Displaying Login Page...");
     loadContent('./views/components/login-main.html', 'mainContent')
         .then(() => {
-            handleLogin();
+            // Add event listener to form instead of direct call
+            const loginForm = document.getElementById('loginForm');
+            if (loginForm) {
+                loginForm.addEventListener('submit', handleLogin);
+            }
         });
 }
 

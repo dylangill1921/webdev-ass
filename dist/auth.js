@@ -1,37 +1,20 @@
 import { Router } from './router.js';
-export function handleLogin() {
-    console.log("Setting up login handler");
-    const loginForm = document.getElementById('loginForm');
-    if (!loginForm) {
-        console.error("Login form not found");
-        return;
+let users = JSON.parse(localStorage.getItem('users') || '[]');
+export function handleLogin(event) {
+    event.preventDefault();
+    const username = document.getElementById('contactName').value;
+    const password = document.getElementById('password').value;
+    const user = users.find(u => u.username === username && u.password === password);
+    if (user) {
+        localStorage.setItem('currentUser', JSON.stringify(user));
+        alert('Login successful!');
+        updateNavbar(true);
+        window.location.href = '/index.html';
+        displayWelcomeMessage(user.fullName);
     }
-    loginForm.addEventListener('submit', function (event) {
-        event.preventDefault();
-        console.log("Login form submitted");
-        const username = document.getElementById('userName').value;
-        const password = document.getElementById('password').value;
-        const users = JSON.parse(localStorage.getItem('users') || '[]');
-        console.log("Found users:", users.length);
-        const user = users.find(u => (u.username === username || u.email === username) && u.password === password);
-        if (user) {
-            console.log("User found, creating session");
-            const session = {
-                username: user.username,
-                fullName: user.fullName,
-                isLoggedIn: true
-            };
-            localStorage.setItem('currentSession', JSON.stringify(session));
-            updateNavigation();
-            alert(`Welcome back, ${user.fullName}!`);
-            const router = new Router();
-            router.navigate('/');
-        }
-        else {
-            console.log("Invalid login attempt");
-            alert('Invalid username or password.');
-        }
-    });
+    else {
+        alert('Error! Invalid username or password...');
+    }
 }
 export function handleSignup() {
     console.log("Setting up signup handler");
@@ -58,8 +41,6 @@ export function handleSignup() {
             alert('Passwords do not match.');
             return;
         }
-        const users = JSON.parse(localStorage.getItem('users') || '[]');
-        console.log("Current users:", users.length);
         if (users.find(u => u.email === email)) {
             alert('Email already registered.');
             return;
@@ -74,29 +55,42 @@ export function handleSignup() {
         users.push(newUser);
         localStorage.setItem('users', JSON.stringify(users));
         console.log("User registered successfully");
+        if (window.statistics) {
+            window.statistics.trackNewMember();
+        }
         alert('Registration successful! Please log in with your email and password.');
         const router = new Router();
         router.navigate('/login');
     });
 }
 export function handleLogout() {
-    console.log("Handling logout");
-    localStorage.removeItem('currentSession');
-    updateNavigation();
-    alert('You have been logged out successfully.');
-    const router = new Router();
-    router.navigate('/');
+    const contacts = {};
+    Object.keys(localStorage).forEach(key => {
+        if (key.startsWith('contact_')) {
+            const value = localStorage.getItem(key);
+            if (value)
+                contacts[key] = value;
+        }
+    });
+    localStorage.removeItem('currentUser');
+    Object.keys(contacts).forEach(key => {
+        localStorage.setItem(key, contacts[key]);
+    });
+    updateNavbar(false);
+    window.location.href = '/index.html';
     setTimeout(() => {
         window.location.reload();
     }, 100);
 }
 export function isLoggedIn() {
-    const session = localStorage.getItem('currentSession');
-    return session !== null && JSON.parse(session).isLoggedIn;
+    return localStorage.getItem('currentUser') !== null;
 }
 export function getCurrentUserName() {
-    const session = localStorage.getItem('currentSession');
-    return session ? JSON.parse(session).fullName : '';
+    const user = localStorage.getItem('currentUser');
+    if (user) {
+        return JSON.parse(user).fullName;
+    }
+    return null;
 }
 export function updateNavigation() {
     console.log("Updating navigation");
@@ -130,6 +124,27 @@ export function updateNavigation() {
             logoutLink.style.display = 'none';
         if (userWelcome)
             userWelcome.style.display = 'none';
+    }
+}
+function updateNavbar(isLoggedIn) {
+    const authNav = document.getElementById('authNav');
+    if (authNav) {
+        if (isLoggedIn) {
+            authNav.innerHTML = `<a class="nav-link" href="#" onclick="handleLogout()">Log Out</a>`;
+        }
+        else {
+            authNav.innerHTML = `<a class="nav-link" href="/views/content/login.html">Log In</a>`;
+        }
+    }
+}
+function displayWelcomeMessage(fullName) {
+    if (window.location.pathname.split('/').pop() === 'index.html') {
+        const mainContent = document.getElementsByTagName("main")[0];
+        const welcomeMessage = document.createElement("p");
+        welcomeMessage.textContent = `Welcome, ${fullName}!`;
+        welcomeMessage.style.color = '#e31837';
+        welcomeMessage.classList.add('mt-3');
+        mainContent.insertBefore(welcomeMessage, mainContent.firstChild?.nextSibling || null);
     }
 }
 document.addEventListener('DOMContentLoaded', () => {

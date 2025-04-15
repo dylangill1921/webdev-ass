@@ -1,3 +1,10 @@
+/*
+    Name: Dylan Gill & Joel Hieckert
+    Class Code: INFT-2202-03
+    Description: auth.ts - Handles authentication
+    Date: February 23, 2025
+*/
+
 import { Router } from './router.js'; // Import Router
 
 // Define the User interface
@@ -16,53 +23,24 @@ interface Session {
     isLoggedIn: boolean;
 }
 
+let users: User[] = JSON.parse(localStorage.getItem('users') || '[]');
+
 // Function to handle user login
-export function handleLogin(): void {
-    console.log("Setting up login handler");
-    const loginForm = document.getElementById('loginForm') as HTMLFormElement | null;
-    if (!loginForm) {
-        console.error("Login form not found");
-        return;
+export function handleLogin(event: Event): void {
+    event.preventDefault();
+    const username = (document.getElementById('contactName') as HTMLInputElement).value;
+    const password = (document.getElementById('password') as HTMLInputElement).value;
+
+    const user = users.find(u => u.username === username && u.password === password);
+    if (user) {
+        localStorage.setItem('currentUser', JSON.stringify(user));
+        alert('Login successful!');
+        updateNavbar(true);
+        window.location.href = '/index.html';
+        displayWelcomeMessage(user.fullName);
+    } else {
+        alert('Error! Invalid username or password...');
     }
-
-    loginForm.addEventListener('submit', function (event: Event) {
-        event.preventDefault();
-        console.log("Login form submitted");
-
-        const username = (document.getElementById('userName') as HTMLInputElement).value;
-        const password = (document.getElementById('password') as HTMLInputElement).value;
-
-        const users: User[] = JSON.parse(localStorage.getItem('users') || '[]');
-        console.log("Found users:", users.length);
-        
-        const user = users.find(u => (u.username === username || u.email === username) && u.password === password);
-
-        if (user) {
-            console.log("User found, creating session");
-            // Create session
-            const session: Session = {
-                username: user.username,
-                fullName: user.fullName,
-                isLoggedIn: true
-            };
-            
-            // Store session in localStorage
-            localStorage.setItem('currentSession', JSON.stringify(session));
-            
-            // Update navigation
-            updateNavigation();
-            
-            // Show welcome message
-            alert(`Welcome back, ${user.fullName}!`);
-            
-            // Redirect to home page
-            const router = new Router();
-            router.navigate('/');
-        } else {
-            console.log("Invalid login attempt");
-            alert('Invalid username or password.');
-        }
-    });
 }
 
 // Function to handle user signup
@@ -96,9 +74,6 @@ export function handleSignup(): void {
             return;
         }
 
-        const users: User[] = JSON.parse(localStorage.getItem('users') || '[]');
-        console.log("Current users:", users.length);
-
         if (users.find(u => u.email === email)) {
             alert('Email already registered.');
             return;
@@ -129,13 +104,25 @@ export function handleSignup(): void {
 
 // Function to handle user logout
 export function handleLogout(): void {
-    console.log("Handling logout");
-    localStorage.removeItem('currentSession');
-    updateNavigation();
-    alert('You have been logged out successfully.');
-    const router = new Router();
-    router.navigate('/');
-    // Add page refresh after a short delay to ensure navigation completes
+    // Save contacts before logout
+    const contacts: { [key: string]: string } = {};
+    Object.keys(localStorage).forEach(key => {
+        if (key.startsWith('contact_')) {
+            const value = localStorage.getItem(key);
+            if (value) contacts[key] = value;
+        }
+    });
+
+    // Clear only user-specific data
+    localStorage.removeItem('currentUser');
+    
+    // Restore contacts
+    Object.keys(contacts).forEach(key => {
+        localStorage.setItem(key, contacts[key]);
+    });
+
+    updateNavbar(false);
+    window.location.href = '/index.html';
     setTimeout(() => {
         window.location.reload();
     }, 100);
@@ -143,14 +130,16 @@ export function handleLogout(): void {
 
 // Function to check if user is logged in
 export function isLoggedIn(): boolean {
-    const session = localStorage.getItem('currentSession');
-    return session !== null && JSON.parse(session).isLoggedIn;
+    return localStorage.getItem('currentUser') !== null;
 }
 
 // Function to get current user's full name
-export function getCurrentUserName(): string {
-    const session = localStorage.getItem('currentSession');
-    return session ? JSON.parse(session).fullName : '';
+export function getCurrentUserName(): string | null {
+    const user = localStorage.getItem('currentUser');
+    if (user) {
+        return JSON.parse(user).fullName;
+    }
+    return null;
 }
 
 // Function to update navigation based on login status
@@ -185,6 +174,28 @@ export function updateNavigation(): void {
         // Hide logout link and welcome message
         if (logoutLink) logoutLink.style.display = 'none';
         if (userWelcome) userWelcome.style.display = 'none';
+    }
+}
+
+function updateNavbar(isLoggedIn: boolean): void {
+    const authNav = document.getElementById('authNav');
+    if (authNav) {
+        if (isLoggedIn) {
+            authNav.innerHTML = `<a class="nav-link" href="#" onclick="handleLogout()">Log Out</a>`;
+        } else {
+            authNav.innerHTML = `<a class="nav-link" href="/views/content/login.html">Log In</a>`;
+        }
+    }
+}
+
+function displayWelcomeMessage(fullName: string): void {
+    if (window.location.pathname.split('/').pop() === 'index.html') {
+        const mainContent = document.getElementsByTagName("main")[0];
+        const welcomeMessage = document.createElement("p");
+        welcomeMessage.textContent = `Welcome, ${fullName}!`;
+        welcomeMessage.style.color = '#e31837';
+        welcomeMessage.classList.add('mt-3');
+        mainContent.insertBefore(welcomeMessage, mainContent.firstChild?.nextSibling || null);
     }
 }
 
