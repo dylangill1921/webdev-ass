@@ -60,7 +60,7 @@ class EventManager {
                 if (!eventId) return;
 
                 if (target.closest('.join-event-btn')) {
-                    this.joinEvent(eventId);
+                    this.handleJoinEvent(eventId);
                 } else if (target.closest('.delete-event-btn')) {
                     this.deleteEvent(eventId);
                 }
@@ -109,24 +109,36 @@ class EventManager {
         this.displayEvents();
     }
 
-    private joinEvent(eventId: string): void {
-        if (!isLoggedIn()) {
+    private handleJoinEvent(eventId: string): void {
+        const event = this.events.find(e => e.id === eventId);
+        if (!event) return;
+
+        const currentUser = getCurrentUserName();
+        if (!currentUser) {
             alert('Please log in to join events.');
             return;
         }
 
-        const currentUser = getCurrentUserName();
-        if (!currentUser) return;
-
-        const event = this.events.find(e => e.id === eventId);
-        if (event) {
-            if (event.participants.includes(currentUser)) {
-                event.participants = event.participants.filter(p => p !== currentUser);
-            } else {
-                event.participants.push(currentUser);
-            }
+        if (event.participants.includes(currentUser)) {
+            event.participants = event.participants.filter(p => p !== currentUser);
             this.saveEvents();
             this.displayEvents();
+            alert('You have left the event.');
+            
+            // Track volunteer leaving in statistics
+            if ((window as any).statistics) {
+                (window as any).statistics.trackVolunteerLeave();
+            }
+        } else {
+            event.participants.push(currentUser);
+            this.saveEvents();
+            this.displayEvents();
+            alert('You have joined the event!');
+            
+            // Track volunteer signup in statistics
+            if ((window as any).statistics) {
+                (window as any).statistics.trackVolunteerSignup();
+            }
         }
     }
 

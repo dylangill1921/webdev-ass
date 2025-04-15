@@ -5,38 +5,231 @@
     Date: March 22, 2025
 */
 "use strict";
-const opportunities = [
-    {
-        title: "Community Clean-Up",
-        description: "Join us for a community clean-up day to help keep our city beautiful!",
-        date: "February 2, 2025",
-        time: "08:00 AM - 2:00 PM"
-    },
-    {
-        title: "Food Bank Help",
-        description: "Help organize donations and prepare food packages for distribution!",
-        date: "February 8, 2025",
-        time: "9:00 AM - 1:00 PM"
-    },
-    {
-        title: "Clothes Donations",
-        description: "Spend time with the elderly and help hand packages of clothes to anyone in need!",
-        date: "February 15, 2025",
-        time: "1:00 PM - 4:00 PM"
+import { isLoggedIn, getCurrentUserName } from './auth.js';
+export class OpportunityManager {
+    constructor() {
+        this.opportunities = [
+            {
+                id: '1',
+                title: "Community Clean-up",
+                description: "Join us for a community clean-up day to help keep our city beautiful!",
+                date: "February 2, 2025",
+                time: "08:00 AM - 2:00 PM",
+                location: "Central Park",
+                volunteers: []
+            },
+            {
+                id: '2',
+                title: "Food Bank Help",
+                description: "Help organize donations and prepare food packages for distribution!",
+                date: "February 8, 2025",
+                time: "9:00 AM - 1:00 PM",
+                location: "Community Food Bank",
+                volunteers: []
+            },
+            {
+                id: '3',
+                title: "Clothes Donations",
+                description: "Spend time with the elderly and help hand packages of clothes to anyone in need!",
+                date: "February 15, 2025",
+                time: "1:00 PM - 4:00 PM",
+                location: "Senior Center",
+                volunteers: []
+            }
+        ];
+        this.storageKey = 'harmonyHubOpportunities';
+        this.loadOpportunities();
+        this.setupEventListeners();
+        this.displayOpportunities();
+        // Track page visit
+        if (window.statistics) {
+            window.statistics.trackPageVisit('/opportunities');
+        }
     }
-];
-export function DisplayOpportunitiesPage() {
-    const container = document.getElementById('opportunitiesContainer');
-    if (container) {
-        opportunities.forEach(opportunity => {
+    setupEventListeners() {
+        // Listen for volunteer button clicks
+        document.addEventListener('click', (e) => {
+            const target = e.target;
+            if (target.matches('.volunteer-btn')) {
+                e.preventDefault();
+                console.log('Volunteer button clicked');
+                this.handleVolunteerClick(target);
+            }
+        });
+        // Listen for confirm button clicks in the modal
+        const confirmButton = document.getElementById('confirmVolunteer');
+        if (confirmButton) {
+            confirmButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                console.log('Confirm button clicked');
+                this.handleVolunteerSubmit();
+            });
+        }
+        // Close modal when clicking the close button
+        const closeButtons = document.querySelectorAll('.close-modal');
+        closeButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const modal = document.getElementById('volunteerModal');
+                if (modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        });
+        // Close modal when clicking outside
+        window.addEventListener('click', (e) => {
+            const modal = document.getElementById('volunteerModal');
+            if (modal && e.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+    }
+    loadOpportunities() {
+        const stored = localStorage.getItem(this.storageKey);
+        if (stored) {
+            try {
+                const storedOpps = JSON.parse(stored);
+                if (storedOpps && storedOpps.length > 0) {
+                    this.opportunities = storedOpps;
+                }
+                console.log('Loaded opportunities:', this.opportunities);
+            }
+            catch (error) {
+                console.error('Error loading opportunities:', error);
+            }
+        }
+        else {
+            this.saveOpportunities();
+        }
+    }
+    saveOpportunities() {
+        localStorage.setItem(this.storageKey, JSON.stringify(this.opportunities));
+        console.log('Saved opportunities:', this.opportunities);
+    }
+    handleVolunteerClick(button) {
+        if (!isLoggedIn()) {
+            alert('Please log in to volunteer for opportunities');
+            return;
+        }
+        const opportunityId = button.getAttribute('data-id');
+        console.log('Handling volunteer click for opportunity:', opportunityId);
+        if (!opportunityId) {
+            console.error('No opportunity ID found');
+            return;
+        }
+        const opportunity = this.opportunities.find(o => o.id === opportunityId);
+        if (!opportunity) {
+            console.error('Opportunity not found');
+            return;
+        }
+        const username = getCurrentUserName();
+        if (!username) {
+            console.error('User not found');
+            return;
+        }
+        // Check if user is already a volunteer
+        if (opportunity.volunteers.includes(username)) {
+            // Remove volunteer
+            opportunity.volunteers = opportunity.volunteers.filter(v => v !== username);
+            this.saveOpportunities();
+            this.displayOpportunities();
+            alert('You have been removed from this opportunity.');
+            return;
+        }
+        // Set the opportunity ID in the modal
+        const opportunityIdInput = document.getElementById('opportunityId');
+        if (opportunityIdInput) {
+            opportunityIdInput.value = opportunityId;
+        }
+        // Show the modal
+        const modal = document.getElementById('volunteerModal');
+        if (modal) {
+            modal.style.display = 'block';
+        }
+    }
+    handleVolunteerSubmit() {
+        console.log('Handling volunteer submit');
+        const form = document.getElementById('volunteerForm');
+        const opportunityId = document.getElementById('opportunityId').value;
+        const fullName = document.getElementById('fullName').value;
+        const email = document.getElementById('email').value;
+        if (!fullName || !email) {
+            alert('Please fill in all fields');
+            return;
+        }
+        const opportunity = this.opportunities.find(o => o.id === opportunityId);
+        if (!opportunity) {
+            console.error('Opportunity not found');
+            return;
+        }
+        const username = getCurrentUserName();
+        if (!username) {
+            console.error('User not found');
+            return;
+        }
+        // Add volunteer to opportunity
+        if (!opportunity.volunteers.includes(username)) {
+            opportunity.volunteers.push(username);
+            this.saveOpportunities();
+            // Track the volunteer signup
+            if (window.statistics) {
+                console.log('Tracking volunteer signup');
+                window.statistics.trackVolunteerSignup({
+                    fullName,
+                    email,
+                    opportunityId,
+                    timestamp: new Date().toISOString()
+                });
+            }
+            // Close the modal
+            const modal = document.getElementById('volunteerModal');
+            if (modal) {
+                modal.style.display = 'none';
+            }
+            // Clear the form
+            form.reset();
+            // Update the display
+            this.displayOpportunities();
+            alert('Thank you for volunteering!');
+        }
+    }
+    displayOpportunities() {
+        const container = document.getElementById('opportunitiesContainer');
+        if (!container) {
+            console.error('Opportunities container not found');
+            return;
+        }
+        container.innerHTML = '';
+        this.opportunities.forEach(opportunity => {
+            const username = getCurrentUserName();
+            const isVolunteer = username && opportunity.volunteers.includes(username);
             const cardHtml = `
-                <div class="col-md-4 mb-3">
-                    <div class="card" style="width: 18rem;">
-                        <div class="card-body">
-                            <h5 class="card-title">${opportunity.title}</h5>
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 border-danger">
+                        <div class="card-body d-flex flex-column">
+                            <h3 class="card-title text-danger">${opportunity.title}</h3>
                             <p class="card-text">${opportunity.description}</p>
-                            <p class="card-text"><small class="text-muted">${opportunity.date} at ${opportunity.time}</small></p>
-                            <button class="btn btn-primary" onclick="openModal('${opportunity.title}')">Sign Up</button>
+                            <p class="card-text">
+                                <small class="text-muted">
+                                    <i class="fas fa-calendar"></i> ${opportunity.date}<br>
+                                    <i class="fas fa-clock"></i> ${opportunity.time}<br>
+                                    <i class="fas fa-map-marker-alt"></i> ${opportunity.location}
+                                </small>
+                            </p>
+                            <p class="card-text mt-auto">
+                                <small class="text-muted">
+                                    <i class="fas fa-users"></i> ${opportunity.volunteers.length} volunteer${opportunity.volunteers.length !== 1 ? 's' : ''} registered
+                                </small>
+                            </p>
+                            ${isLoggedIn() ? `
+                                <button class="btn ${isVolunteer ? 'btn-danger' : 'btn-outline-danger'} volunteer-btn w-100" 
+                                        data-id="${opportunity.id}">
+                                    ${isVolunteer ? 'Leave Opportunity' : 'Volunteer Now'}
+                                </button>
+                            ` : `
+                                <button class="btn btn-outline-secondary w-100" onclick="alert('Please log in to volunteer')">
+                                    Login to Volunteer
+                                </button>
+                            `}
                         </div>
                     </div>
                 </div>
@@ -45,49 +238,12 @@ export function DisplayOpportunitiesPage() {
         });
     }
 }
-document.addEventListener('DOMContentLoaded', function () {
+export function DisplayOpportunitiesPage() {
     const container = document.getElementById('opportunitiesContainer');
-    if (container) {
-        container.addEventListener('click', function (event) {
-            const target = event.target;
-            if (target.classList.contains('btn-primary')) {
-                const card = target.closest('.card');
-                const titleElement = card === null || card === void 0 ? void 0 : card.querySelector('.card-title');
-                const title = (titleElement === null || titleElement === void 0 ? void 0 : titleElement.textContent) || '';
-                openModal(title);
-            }
-        });
+    if (!container) {
+        console.error('Opportunities container not found');
+        return;
     }
-    const signUpForm = document.getElementById('signUpForm');
-    if (signUpForm) {
-        signUpForm.addEventListener('submit', function (event) {
-            event.preventDefault();
-            const emailInput = document.getElementById('emailAddress');
-            const email = emailInput.value;
-            if (email.includes('@')) {
-                console.log('Form is valid');
-                $('#signUpModal').modal('hide');
-                alert('Thank you for signing up!');
-            }
-            else {
-                alert('Please enter a valid email address.');
-            }
-        });
-    }
-    const cancelButton = document.getElementById('cancelButton');
-    if (cancelButton) {
-        cancelButton.addEventListener('click', function () {
-            $('#signUpModal').modal('hide');
-        });
-    }
-});
-window.openModal = function (title) {
-    const modalTitle = document.getElementById('modalTitle');
-    if (modalTitle) {
-        modalTitle.innerText = `Sign Up for ${title}`;
-        $('#signUpModal').modal('show');
-    }
-};
-function openModal(title) {
-    throw new Error("Function not implemented.");
+    // Initialize the opportunities manager
+    new OpportunityManager();
 }
