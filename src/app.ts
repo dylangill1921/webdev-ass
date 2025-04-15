@@ -11,6 +11,7 @@ import { DisplayOpportunitiesPage } from './opportunities.js';
 import { loadGallery } from './gallery.js';
 import { handleLogin, handleSignup, updateNavigation, handleLogout, getCurrentUserName, isLoggedIn } from './auth.js';
 import { initializeEventsPage } from './events.js';
+import { StatisticsManager } from './statistics.js';
 
 "use strict";
 
@@ -93,7 +94,11 @@ function displayRegisterPage(): void {
     console.log("Displaying Register Page...");
     loadContent('./views/components/register-main.html', 'mainContent')
         .then(() => {
-            handleSignup();
+            // Add event listener to form
+            const registerForm = document.getElementById('registerForm');
+            if (registerForm) {
+                registerForm.addEventListener('submit', handleSignup);
+            }
         });
 }
 
@@ -101,17 +106,13 @@ function displayStatisticsPage(): void {
     console.log("Displaying Statistics Page...");
     loadContent('./views/components/statistics-main.html', 'mainContent')
         .then(() => {
-            // Ensure Chart.js is loaded first
-            const chartScript = document.createElement('script');
-            chartScript.src = 'https://cdn.jsdelivr.net/npm/chart.js';
-            chartScript.onload = () => {
-                // Then load our statistics script
-                const script = document.createElement('script');
-                script.src = '../../src/statistics.js';
-                script.type = 'module';
-                document.body.appendChild(script);
-            };
-            document.body.appendChild(chartScript);
+            // Initialize statistics manager
+            const stats = StatisticsManager.getInstance();
+            // Force an update of the UI and charts
+            setTimeout(() => {
+                stats.updateUI();
+                stats.setupCharts();
+            }, 100);
         });
 }
 
@@ -201,6 +202,21 @@ function Start(): void {
                 }, 50);
             }
         }
+    });
+
+    // Initialize statistics tracking
+    StatisticsManager.getInstance();
+
+    // Track initial page load
+    window.addEventListener('DOMContentLoaded', () => {
+        const stats = StatisticsManager.getInstance();
+        stats.trackPageVisit(window.location.hash || '/');
+    });
+
+    // Track page changes
+    window.addEventListener('hashchange', () => {
+        const stats = StatisticsManager.getInstance();
+        stats.trackPageVisit(window.location.hash);
     });
 }
 

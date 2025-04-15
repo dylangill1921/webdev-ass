@@ -2,18 +2,26 @@ export class StatisticsManager {
     constructor() {
         this.storageKey = 'harmonyHubStats';
         this.volunteerStorageKey = 'harmonyHubVolunteers';
+        console.log('Initializing StatisticsManager...');
         this.stats = this.loadStats();
         this.volunteers = this.loadVolunteers();
-        this.attachToWindow();
+        this.trackPageVisit(window.location.hash || '/');
         if (window.location.hash === '#/statistics') {
-            this.setupCharts();
+            console.log('On statistics page, setting up charts...');
+            setTimeout(() => {
+                this.setupCharts();
+                this.updateUI();
+            }, 100);
         }
         window.addEventListener('hashchange', () => {
             if (window.location.hash === '#/statistics') {
-                setTimeout(() => this.setupCharts(), 100);
+                console.log('Navigation to statistics page, setting up charts...');
+                setTimeout(() => {
+                    this.setupCharts();
+                    this.updateUI();
+                }, 100);
             }
         });
-        this.trackPageVisit(window.location.hash || '/');
     }
     static getInstance() {
         if (!StatisticsManager.instance) {
@@ -70,59 +78,66 @@ export class StatisticsManager {
         }
     }
     setupCharts() {
-        if (this.visitsChart) {
-            this.visitsChart.destroy();
+        console.log('Setting up charts...');
+        if (typeof window.Chart === 'undefined') {
+            console.error('Chart.js not loaded');
+            return;
         }
-        if (this.volunteerChart) {
-            this.volunteerChart.destroy();
-        }
-        if (this.memberChart) {
-            this.memberChart.destroy();
-        }
-        const chartConfig = (label, color) => ({
-            type: 'line',
-            data: {
-                labels: [],
-                datasets: [{
-                        label: label,
-                        data: [],
-                        fill: true,
-                        borderColor: color,
-                        backgroundColor: `${color}33`,
-                        tension: 0.4
-                    }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: true
-                    }
+        try {
+            const visitsElement = document.getElementById('visitsChart');
+            const volunteerElement = document.getElementById('volunteerChart');
+            const memberElement = document.getElementById('memberChart');
+            if (!visitsElement || !volunteerElement || !memberElement) {
+                console.error('One or more chart canvases not found');
+                return;
+            }
+            if (this.visitsChart)
+                this.visitsChart.destroy();
+            if (this.volunteerChart)
+                this.volunteerChart.destroy();
+            if (this.memberChart)
+                this.memberChart.destroy();
+            const createConfig = (label, color) => ({
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                            label,
+                            data: [],
+                            fill: true,
+                            borderColor: color,
+                            backgroundColor: `${color}33`,
+                            tension: 0.4
+                        }]
                 },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            stepSize: 1
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1
+                            }
                         }
                     }
                 }
-            }
-        });
-        const visitsElement = document.getElementById('visitsChart');
-        const volunteerElement = document.getElementById('volunteerChart');
-        const memberElement = document.getElementById('memberChart');
-        if (visitsElement) {
-            this.visitsChart = new Chart(visitsElement, chartConfig('Daily Visits', '#3498db'));
+            });
+            console.log('Creating charts...');
+            this.visitsChart = new window.Chart(visitsElement, createConfig('Daily Visits', '#3498db'));
+            this.volunteerChart = new window.Chart(volunteerElement, createConfig('Volunteer Signups', '#2ecc71'));
+            this.memberChart = new window.Chart(memberElement, createConfig('New Members', '#e74c3c'));
+            this.updateCharts();
+            console.log('Charts created and updated successfully');
         }
-        if (volunteerElement) {
-            this.volunteerChart = new Chart(volunteerElement, chartConfig('Volunteer Signups', '#2ecc71'));
+        catch (error) {
+            console.error('Error setting up charts:', error);
         }
-        if (memberElement) {
-            this.memberChart = new Chart(memberElement, chartConfig('New Members', '#e74c3c'));
-        }
-        this.updateCharts();
     }
     updateCharts() {
         if (!this.visitsChart && !this.volunteerChart && !this.memberChart) {
@@ -187,7 +202,7 @@ export class StatisticsManager {
         this.saveStats();
         this.saveVolunteers();
     }
-    trackNewMember() {
+    trackMemberRegistration() {
         console.log('Tracking new member registration');
         this.ensureTodayStats();
         const today = this.getTodayKey();
@@ -196,11 +211,26 @@ export class StatisticsManager {
         this.saveStats();
     }
     attachToWindow() {
-        window.statistics = {
-            trackPageVisit: (path) => this.trackPageVisit(path),
-            trackVolunteerSignup: (data) => this.trackVolunteerSignup(data),
-            trackNewMember: () => this.trackNewMember()
+        window.statisticsManager = this;
+        if (window.location.hash === '#/statistics') {
+            console.log('Statistics page loaded, initializing charts');
+            setTimeout(() => {
+                this.setupCharts();
+                this.updateUI();
+            }, 100);
+        }
+    }
+    waitForChart(callback) {
+        const check = () => {
+            if (window.Chart) {
+                callback();
+            }
+            else {
+                console.log('Waiting for Chart.js to load...');
+                setTimeout(check, 100);
+            }
         };
+        check();
     }
 }
 StatisticsManager.getInstance();

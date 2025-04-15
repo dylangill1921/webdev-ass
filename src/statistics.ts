@@ -1,5 +1,12 @@
 import { isLoggedIn } from './auth.js';
 
+// Declare Chart.js types
+declare global {
+    interface Window {
+        Chart: typeof Chart;
+    }
+}
+
 // Use Chart from the global scope since we're loading it from CDN
 declare const Chart: any;
 
@@ -29,25 +36,33 @@ export class StatisticsManager {
     private memberChart: any;
 
     private constructor() {
+        console.log('Initializing StatisticsManager...');
         this.stats = this.loadStats();
         this.volunteers = this.loadVolunteers();
-        this.attachToWindow();
         
-        // Initialize charts if we're on the statistics page
-        if (window.location.hash === '#/statistics') {
-            this.setupCharts();
-        }
-
-        // Add route change listener to reinitialize charts when needed
-        window.addEventListener('hashchange', () => {
-            if (window.location.hash === '#/statistics') {
-                // Small delay to ensure DOM is ready
-                setTimeout(() => this.setupCharts(), 100);
-            }
-        });
-
         // Track initial page visit
         this.trackPageVisit(window.location.hash || '/');
+
+        // Initialize charts if we're on the statistics page
+        if (window.location.hash === '#/statistics') {
+            console.log('On statistics page, setting up charts...');
+            // Small delay to ensure DOM is ready
+            setTimeout(() => {
+                this.setupCharts();
+                this.updateUI();
+            }, 100);
+        }
+
+        // Add route change listener
+        window.addEventListener('hashchange', () => {
+            if (window.location.hash === '#/statistics') {
+                console.log('Navigation to statistics page, setting up charts...');
+                setTimeout(() => {
+                    this.setupCharts();
+                    this.updateUI();
+                }, 100);
+            }
+        });
     }
 
     public static getInstance(): StatisticsManager {
@@ -111,65 +126,76 @@ export class StatisticsManager {
         }
     }
 
-    private setupCharts(): void {
-        // Destroy existing charts if they exist
-        if (this.visitsChart) {
-            this.visitsChart.destroy();
-        }
-        if (this.volunteerChart) {
-            this.volunteerChart.destroy();
-        }
-        if (this.memberChart) {
-            this.memberChart.destroy();
+    public setupCharts(): void {
+        console.log('Setting up charts...');
+        
+        // Ensure Chart is available
+        if (typeof window.Chart === 'undefined') {
+            console.error('Chart.js not loaded');
+            return;
         }
 
-        const chartConfig = (label: string, color: string) => ({
-            type: 'line',
-            data: {
-                labels: [],
-                datasets: [{
-                    label: label,
-                    data: [],
-                    fill: true,
-                    borderColor: color,
-                    backgroundColor: `${color}33`,
-                    tension: 0.4
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: true
-                    }
+        try {
+            // Get canvas elements
+            const visitsElement = document.getElementById('visitsChart') as HTMLCanvasElement;
+            const volunteerElement = document.getElementById('volunteerChart') as HTMLCanvasElement;
+            const memberElement = document.getElementById('memberChart') as HTMLCanvasElement;
+
+            if (!visitsElement || !volunteerElement || !memberElement) {
+                console.error('One or more chart canvases not found');
+                return;
+            }
+
+            // Destroy existing charts
+            if (this.visitsChart) this.visitsChart.destroy();
+            if (this.volunteerChart) this.volunteerChart.destroy();
+            if (this.memberChart) this.memberChart.destroy();
+
+            // Create chart configuration
+            const createConfig = (label: string, color: string) => ({
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label,
+                        data: [],
+                        fill: true,
+                        borderColor: color,
+                        backgroundColor: `${color}33`,
+                        tension: 0.4
+                    }]
                 },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            stepSize: 1
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1
+                            }
                         }
                     }
                 }
-            }
-        });
+            });
 
-        const visitsElement = document.getElementById('visitsChart');
-        const volunteerElement = document.getElementById('volunteerChart');
-        const memberElement = document.getElementById('memberChart');
+            // Create new charts
+            console.log('Creating charts...');
+            this.visitsChart = new window.Chart(visitsElement, createConfig('Daily Visits', '#3498db'));
+            this.volunteerChart = new window.Chart(volunteerElement, createConfig('Volunteer Signups', '#2ecc71'));
+            this.memberChart = new window.Chart(memberElement, createConfig('New Members', '#e74c3c'));
 
-        if (visitsElement) {
-            this.visitsChart = new Chart(visitsElement, chartConfig('Daily Visits', '#3498db'));
+            // Update charts with data
+            this.updateCharts();
+            console.log('Charts created and updated successfully');
+        } catch (error) {
+            console.error('Error setting up charts:', error);
         }
-        if (volunteerElement) {
-            this.volunteerChart = new Chart(volunteerElement, chartConfig('Volunteer Signups', '#2ecc71'));
-        }
-        if (memberElement) {
-            this.memberChart = new Chart(memberElement, chartConfig('New Members', '#e74c3c'));
-        }
-
-        this.updateCharts();
     }
 
     private updateCharts(): void {
@@ -199,7 +225,7 @@ export class StatisticsManager {
         updateChart(this.memberChart, 'members');
     }
 
-    private updateUI(): void {
+    public updateUI(): void {
         // Calculate totals from all dates
         const totals = Object.values(this.stats).reduce((acc, dayStats) => ({
             visits: (acc.visits || 0) + (dayStats.visits || 0),
@@ -248,7 +274,7 @@ export class StatisticsManager {
         this.saveVolunteers();
     }
 
-    public trackNewMember(): void {
+    public trackMemberRegistration(): void {
         console.log('Tracking new member registration');
         this.ensureTodayStats();
         const today = this.getTodayKey();
@@ -258,11 +284,29 @@ export class StatisticsManager {
     }
 
     private attachToWindow(): void {
-        (window as any).statistics = {
-            trackPageVisit: (path: string) => this.trackPageVisit(path),
-            trackVolunteerSignup: (data: VolunteerData) => this.trackVolunteerSignup(data),
-            trackNewMember: () => this.trackNewMember()
+        // Make instance available globally for debugging
+        (window as any).statisticsManager = this;
+        
+        // Ensure charts are initialized when the statistics page loads
+        if (window.location.hash === '#/statistics') {
+            console.log('Statistics page loaded, initializing charts');
+            setTimeout(() => {
+                this.setupCharts();
+                this.updateUI();
+            }, 100);
+        }
+    }
+
+    private waitForChart(callback: () => void): void {
+        const check = () => {
+            if (window.Chart) {
+                callback();
+            } else {
+                console.log('Waiting for Chart.js to load...');
+                setTimeout(check, 100);
+            }
         };
+        check();
     }
 }
 

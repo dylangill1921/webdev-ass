@@ -1,67 +1,63 @@
-import { Router } from './router.js';
+import { StatisticsManager } from './statistics.js';
 let users = JSON.parse(localStorage.getItem('users') || '[]');
 export function handleLogin(event) {
     event.preventDefault();
-    const username = document.getElementById('contactName').value;
-    const password = document.getElementById('password').value;
-    const user = users.find(u => u.username === username && u.password === password);
+    const form = event.target;
+    const email = form.querySelector('#emailAddress')?.value;
+    const password = form.querySelector('#password')?.value;
+    if (!email || !password) {
+        alert('Please enter both email and password');
+        return;
+    }
+    const users = JSON.parse(localStorage.getItem('users') || '[]');
+    const user = users.find((u) => u.email === email && u.password === password);
     if (user) {
         localStorage.setItem('currentUser', JSON.stringify(user));
         alert('Login successful!');
-        updateNavbar(true);
-        window.location.href = '/index.html';
-        displayWelcomeMessage(user.fullName);
+        window.location.hash = '#/';
+        updateNavigation();
     }
     else {
-        alert('Error! Invalid username or password...');
+        alert('Invalid email or password');
     }
 }
-export function handleSignup() {
-    console.log("Setting up signup handler");
-    const signupForm = document.getElementById('registerForm');
-    if (!signupForm) {
-        console.error("Register form not found");
+export function handleSignup(event) {
+    event.preventDefault();
+    const form = event.target;
+    const firstName = form.querySelector('#FirstName')?.value;
+    const lastName = form.querySelector('#lastName')?.value;
+    const email = form.querySelector('#emailAddress')?.value;
+    const phone = form.querySelector('#phoneNumber')?.value;
+    const password = form.querySelector('#password')?.value;
+    const confirmPassword = form.querySelector('#confirmPassword')?.value;
+    if (!firstName || !lastName || !email || !phone || !password || !confirmPassword) {
+        alert('Please fill in all required fields.');
         return;
     }
-    signupForm.addEventListener('submit', function (event) {
-        event.preventDefault();
-        console.log("Register form submitted");
-        const firstName = document.getElementById('FirstName').value;
-        const lastName = document.getElementById('lastName').value;
-        const fullName = `${firstName} ${lastName}`;
-        const email = document.getElementById('emailAddress').value;
-        const phone = document.getElementById('phoneNumber').value;
-        const password = document.getElementById('password').value;
-        const confirmPassword = document.getElementById('confirmPassword').value;
-        if (!firstName || !lastName || !email || !phone || !password || !confirmPassword) {
-            alert('Please fill in all required fields.');
-            return;
-        }
-        if (password !== confirmPassword) {
-            alert('Passwords do not match.');
-            return;
-        }
-        if (users.find(u => u.email === email)) {
-            alert('Email already registered.');
-            return;
-        }
-        const newUser = {
-            fullName,
-            username: email,
-            email,
-            phone,
-            password
-        };
-        users.push(newUser);
-        localStorage.setItem('users', JSON.stringify(users));
-        console.log("User registered successfully");
-        if (window.statistics) {
-            window.statistics.trackNewMember();
-        }
-        alert('Registration successful! Please log in with your email and password.');
-        const router = new Router();
-        router.navigate('/login');
-    });
+    if (password !== confirmPassword) {
+        alert('Passwords do not match.');
+        return;
+    }
+    const fullName = `${firstName} ${lastName}`;
+    const users = JSON.parse(localStorage.getItem('users') || '[]');
+    const newUser = {
+        fullName,
+        username: email,
+        email,
+        phone,
+        password
+    };
+    if (users.some((u) => u.email === email)) {
+        alert('Email already registered.');
+        return;
+    }
+    users.push(newUser);
+    localStorage.setItem('users', JSON.stringify(users));
+    StatisticsManager.getInstance().trackMemberRegistration();
+    localStorage.setItem('currentUser', JSON.stringify(newUser));
+    alert('Registration successful!');
+    window.location.hash = '#/';
+    updateNavigation();
 }
 export function handleLogout() {
     const contacts = {};

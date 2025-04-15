@@ -5,51 +5,47 @@ Date: February 23, 2025
 Description: statistics-main.html - SPA fragment for Statistics page
 -->
 
-<div class="container mt-5">
+<!DOCTYPE html>
+<div class="container mt-4">
     <div class="text-center mb-4">
-        <h1 class="display-4">
-            <i class="fas fa-chart-line"></i> Salvations Army Statistics
-        </h1>
-        <p class="lead text-muted">Tracking our community's growth and engagement!</p>
+        <h1><i class="fas fa-chart-line"></i> Salvations Army Statistics</h1>
+        <p class="lead">Tracking our community's growth and engagement!</p>
     </div>
 
-    <div class="row justify-content-center">
-        <!-- Website Activity Card -->
-        <div class="col-md-4 mb-4">
-            <div class="card h-100 shadow-sm">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card mb-4">
                 <div class="card-body text-center">
-                    <h3 class="card-title">Website Activity</h3>
+                    <h2>Website Activity</h2>
                     <p class="text-muted">Total visits to our platform</p>
-                    <div class="display-4 mb-3" id="totalVisits">0</div>
-                    <div class="chart-container" style="position: relative; height:200px;">
+                    <h3 id="totalVisits">0</h3>
+                    <div style="height: 300px;">
                         <canvas id="visitsChart"></canvas>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Volunteer Engagement Card -->
-        <div class="col-md-4 mb-4">
-            <div class="card h-100 shadow-sm">
+        <div class="col-md-4">
+            <div class="card mb-4">
                 <div class="card-body text-center">
-                    <h3 class="card-title">Volunteer Engagement</h3>
+                    <h2>Volunteer Engagement</h2>
                     <p class="text-muted">Number of volunteer signups</p>
-                    <div class="display-4 mb-3" id="totalVolunteers">0</div>
-                    <div class="chart-container" style="position: relative; height:200px;">
+                    <h3 id="totalVolunteers">0</h3>
+                    <div style="height: 300px;">
                         <canvas id="volunteerChart"></canvas>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Member Growth Card -->
-        <div class="col-md-4 mb-4">
-            <div class="card h-100 shadow-sm">
+        <div class="col-md-4">
+            <div class="card mb-4">
                 <div class="card-body text-center">
-                    <h3 class="card-title">Member Growth</h3>
+                    <h2>Member Growth</h2>
                     <p class="text-muted">Total registered members</p>
-                    <div class="display-4 mb-3" id="totalMembers">0</div>
-                    <div class="chart-container" style="position: relative; height:200px;">
+                    <h3 id="totalMembers">0</h3>
+                    <div style="height: 300px;">
                         <canvas id="memberChart"></canvas>
                     </div>
                 </div>
@@ -58,13 +54,27 @@ Description: statistics-main.html - SPA fragment for Statistics page
     </div>
 </div>
 
-<!-- Initialize statistics after page load -->
+<!-- Load dependencies -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- Initialize statistics -->
 <script type="module">
-    import { StatisticsManager } from '../../src/statistics.js';
-    
-    // Wait for a short delay to ensure DOM is ready
-    setTimeout(() => {
-        // Use getInstance instead of constructor
-        StatisticsManager.getInstance();
-    }, 100);
+    document.addEventListener('DOMContentLoaded', async () => {
+        try {
+            // Ensure Chart.js is loaded
+            if (!window.Chart) {
+                throw new Error('Chart.js not loaded');
+            }
+            
+            const { StatisticsManager } = await import('../../dist/statistics.js');
+            const stats = StatisticsManager.getInstance();
+            await new Promise(resolve => setTimeout(resolve, 100)); // Small delay to ensure DOM is ready
+            stats.updateUI();
+            stats.setupCharts();
+        } catch (error) {
+            console.error('Error initializing statistics:', error);
+        }
+    });
 </script>
+</body>
+</html>

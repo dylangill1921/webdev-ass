@@ -6,6 +6,7 @@
 */
 
 import { Router } from './router.js'; // Import Router
+import { StatisticsManager } from './statistics.js';
 
 // Define the User interface
 interface User {
@@ -28,78 +29,81 @@ let users: User[] = JSON.parse(localStorage.getItem('users') || '[]');
 // Function to handle user login
 export function handleLogin(event: Event): void {
     event.preventDefault();
-    const username = (document.getElementById('contactName') as HTMLInputElement).value;
-    const password = (document.getElementById('password') as HTMLInputElement).value;
+    const form = event.target as HTMLFormElement;
+    const email = (form.querySelector('#emailAddress') as HTMLInputElement)?.value;
+    const password = (form.querySelector('#password') as HTMLInputElement)?.value;
 
-    const user = users.find(u => u.username === username && u.password === password);
+    if (!email || !password) {
+        alert('Please enter both email and password');
+        return;
+    }
+
+    const users = JSON.parse(localStorage.getItem('users') || '[]');
+    const user = users.find((u: User) => u.email === email && u.password === password);
+    
     if (user) {
         localStorage.setItem('currentUser', JSON.stringify(user));
         alert('Login successful!');
-        updateNavbar(true);
-        window.location.href = '/index.html';
-        displayWelcomeMessage(user.fullName);
+        window.location.hash = '#/';
+        updateNavigation();
     } else {
-        alert('Error! Invalid username or password...');
+        alert('Invalid email or password');
     }
 }
 
 // Function to handle user signup
-export function handleSignup(): void {
-    console.log("Setting up signup handler");
-    const signupForm = document.getElementById('registerForm') as HTMLFormElement | null;
-    if (!signupForm) {
-        console.error("Register form not found");
+export function handleSignup(event: Event): void {
+    event.preventDefault();
+    
+    const form = event.target as HTMLFormElement;
+    const firstName = (form.querySelector('#FirstName') as HTMLInputElement)?.value;
+    const lastName = (form.querySelector('#lastName') as HTMLInputElement)?.value;
+    const email = (form.querySelector('#emailAddress') as HTMLInputElement)?.value;
+    const phone = (form.querySelector('#phoneNumber') as HTMLInputElement)?.value;
+    const password = (form.querySelector('#password') as HTMLInputElement)?.value;
+    const confirmPassword = (form.querySelector('#confirmPassword') as HTMLInputElement)?.value;
+
+    if (!firstName || !lastName || !email || !phone || !password || !confirmPassword) {
+        alert('Please fill in all required fields.');
         return;
     }
 
-    signupForm.addEventListener('submit', function (event: Event) {
-        event.preventDefault();
-        console.log("Register form submitted");
+    if (password !== confirmPassword) {
+        alert('Passwords do not match.');
+        return;
+    }
 
-        const firstName = (document.getElementById('FirstName') as HTMLInputElement).value;
-        const lastName = (document.getElementById('lastName') as HTMLInputElement).value;
-        const fullName = `${firstName} ${lastName}`;
-        const email = (document.getElementById('emailAddress') as HTMLInputElement).value;
-        const phone = (document.getElementById('phoneNumber') as HTMLInputElement).value;
-        const password = (document.getElementById('password') as HTMLInputElement).value;
-        const confirmPassword = (document.getElementById('confirmPassword') as HTMLInputElement).value;
+    const fullName = `${firstName} ${lastName}`;
+    
+    // Add user to localStorage
+    const users = JSON.parse(localStorage.getItem('users') || '[]');
+    const newUser: User = {
+        fullName,
+        username: email,
+        email,
+        phone,
+        password
+    };
 
-        if (!firstName || !lastName || !email || !phone || !password || !confirmPassword) {
-            alert('Please fill in all required fields.');
-            return;
-        }
+    // Check if user already exists
+    if (users.some((u: User) => u.email === email)) {
+        alert('Email already registered.');
+        return;
+    }
 
-        if (password !== confirmPassword) {
-            alert('Passwords do not match.');
-            return;
-        }
-
-        if (users.find(u => u.email === email)) {
-            alert('Email already registered.');
-            return;
-        }
-
-        const newUser: User = {
-            fullName,
-            username: email,
-            email,
-            phone,
-            password
-        };
-
-        users.push(newUser);
-        localStorage.setItem('users', JSON.stringify(users));
-        console.log("User registered successfully");
-
-        // Track new member in statistics
-        if ((window as any).statistics) {
-            (window as any).statistics.trackNewMember();
-        }
-
-        alert('Registration successful! Please log in with your email and password.');
-        const router = new Router();
-        router.navigate('/login');
-    });
+    users.push(newUser);
+    localStorage.setItem('users', JSON.stringify(users));
+    
+    // Track the new member registration
+    StatisticsManager.getInstance().trackMemberRegistration();
+    
+    // Set current session
+    localStorage.setItem('currentUser', JSON.stringify(newUser));
+    
+    // Show success message and redirect
+    alert('Registration successful!');
+    window.location.hash = '#/';
+    updateNavigation();
 }
 
 // Function to handle user logout

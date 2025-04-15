@@ -4,6 +4,7 @@ import { DisplayOpportunitiesPage } from './opportunities.js';
 import { loadGallery } from './gallery.js';
 import { handleLogin, handleSignup, updateNavigation, handleLogout, getCurrentUserName, isLoggedIn } from './auth.js';
 import { initializeEventsPage } from './events.js';
+import { StatisticsManager } from './statistics.js';
 "use strict";
 function displayHomePage() {
     console.log("Home Page");
@@ -73,22 +74,21 @@ function displayRegisterPage() {
     console.log("Displaying Register Page...");
     loadContent('./views/components/register-main.html', 'mainContent')
         .then(() => {
-        handleSignup();
+        const registerForm = document.getElementById('registerForm');
+        if (registerForm) {
+            registerForm.addEventListener('submit', handleSignup);
+        }
     });
 }
 function displayStatisticsPage() {
     console.log("Displaying Statistics Page...");
     loadContent('./views/components/statistics-main.html', 'mainContent')
         .then(() => {
-        const chartScript = document.createElement('script');
-        chartScript.src = 'https://cdn.jsdelivr.net/npm/chart.js';
-        chartScript.onload = () => {
-            const script = document.createElement('script');
-            script.src = '../../src/statistics.js';
-            script.type = 'module';
-            document.body.appendChild(script);
-        };
-        document.body.appendChild(chartScript);
+        const stats = StatisticsManager.getInstance();
+        setTimeout(() => {
+            stats.updateUI();
+            stats.setupCharts();
+        }, 100);
     });
 }
 function loadMemes() {
@@ -159,6 +159,15 @@ function Start() {
                 }, 50);
             }
         }
+    });
+    StatisticsManager.getInstance();
+    window.addEventListener('DOMContentLoaded', () => {
+        const stats = StatisticsManager.getInstance();
+        stats.trackPageVisit(window.location.hash || '/');
+    });
+    window.addEventListener('hashchange', () => {
+        const stats = StatisticsManager.getInstance();
+        stats.trackPageVisit(window.location.hash);
     });
 }
 window.addEventListener("load", Start);
