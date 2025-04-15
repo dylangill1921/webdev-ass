@@ -2,7 +2,7 @@
     Name: Dylan Gill & Joel Hieckert
     Class Code: INFT-2202-03
     Description: events.ts
-    Date: March 22, 2025
+    Date: April 14, 2025
 */
 
 import { isLoggedIn, getCurrentUserName } from './auth.js';
@@ -273,7 +273,7 @@ export function initializeEventsPage(): void {
     const container = document.querySelector('.container');
     if (!container) return;
 
-    // Common template HTML that needs to be present for both logged-in and non-logged-in users
+    // Template HTML that needs to be present for both logged-in and non-logged-in users
     const commonTemplates = `
         <!-- Event Template -->
         <template id="eventTemplate">

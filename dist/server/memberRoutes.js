@@ -1,4 +1,4 @@
-"use strict";
-import express from "express";
+import express from 'express';
 const router = express.Router();
+export default router;
 //# sourceMappingURL=memberRoutes.js.map

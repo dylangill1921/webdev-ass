@@ -1,3 +1,10 @@
+/*
+    Name: Dylan Gill & Joel Hieckert
+    Class Code: INFT-2202-03
+    Description: router.ts 
+    Date: April 14, 2025
+*/
+
 import { isLoggedIn } from './auth.js';
 
 // Declare Chart.js types

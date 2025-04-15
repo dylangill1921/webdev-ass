@@ -2,10 +2,10 @@
     Name: Dylan Gill & Joel Hieckert
     Class Code: INFT-2202-03
     Description: auth.ts - Handles authentication
-    Date: February 23, 2025
+    Date: April 14, 2025  
 */
 
-import { Router } from './router.js'; // Import Router
+import { Router } from './router.js';
 import { StatisticsManager } from './statistics.js';
 
 // Define the User interface
@@ -14,7 +14,7 @@ interface User {
     username: string;
     email: string;
     phone: string;
-    password: string; // Note: Storing passwords in plain text in localStorage is insecure
+    password: string; 
 }
 
 // Define the Session interface

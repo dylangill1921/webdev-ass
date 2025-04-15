@@ -2,7 +2,7 @@
     Name: Dylan Gill & Joel Hieckert
     Class Code: INFT-2202-03
     Description: contact.ts
-    Date: March 22, 2025
+    Date: April 14, 2025
 */
 
 "use strict";
@@ -189,7 +189,7 @@ export function initializeContactPage(): void {
         (document.getElementById('emailAddress') as HTMLInputElement).value = contact.EmailAddress;
         (document.getElementById('message') as HTMLTextAreaElement).value = contact.Message;
 
-        // Remove the contact from storage (will be re-added when form is submitted)
+        // Remove the contact from storage
         localStorage.removeItem(key);
 
         // Close the modal

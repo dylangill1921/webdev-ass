@@ -2,7 +2,7 @@
     Name: Dylan Gill & Joel Hieckert
     Class Code: INFT-2202-03
     Description: app.ts 
-    Date: March 22, 2025
+    Date: April 14, 2025
 */
 
 import { Router, loadContent } from './router.js';
